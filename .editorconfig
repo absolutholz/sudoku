@@ -10,6 +10,10 @@ charset = utf-8
 indent_style = tab
 tab_width = 4
 
-[*.json]
+[*.md]
+# following setting does not work in vscode
+trim_trailing_whitespace = false
+
+[{*.yml,*.yaml,*.json}]
 indent_style = space
 indent_size = 2
