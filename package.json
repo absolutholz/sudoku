@@ -5,10 +5,12 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "install": "napa robatron/sudoku.js"
   },
   "dependencies": {
     "core-js": "^3.4.3",
+    "napa": "^3.0.0",
     "vue": "^2.6.10"
   },
   "devDependencies": {
@@ -29,7 +31,9 @@
       "plugin:vue/essential",
       "eslint:recommended"
     ],
-    "rules": {},
+    "rules": {
+      "no-console": 1
+    },
     "parserOptions": {
       "parser": "babel-eslint"
     }
