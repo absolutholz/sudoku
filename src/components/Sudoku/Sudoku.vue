@@ -44,6 +44,11 @@
 			>
 				{{ value + 1 }}
 			</button>
+			<button
+				@click="clearCellValue"
+			>
+				X
+			</button>
 		</div>
 	</div>
 </template>
@@ -199,6 +204,10 @@ export default {
 			}
 		},
 
+		clearCellValue() {
+			this.puzzle[this.activeRow][this.activeCol].value = null;
+		},
+
 		isCellInvalid(row, col, value) {
 			if (!value) {
 				return true;
@@ -242,8 +251,8 @@ export default {
 				}
 			}
 			return true;
-		}
-	}
+		},
+	},
 };
 </script>
 

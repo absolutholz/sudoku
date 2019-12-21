@@ -62,7 +62,8 @@ export default {
 			type: Number,
 		},
 		value: {
-			required: true,
+			default: null,
+			required: false,
 			type: Number,
 		},
 	},
