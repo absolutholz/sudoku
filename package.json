@@ -30,6 +30,8 @@
     "node-sass": "^4.13.0",
     "prettier": "^1.19.1",
     "sass-loader": "^8.0.0",
+    "scss-mixins-functions-variables": "github:absolutholz/scss-mixins-functions-variables",
+    "semantic-reboot": "github:absolutholz/semantic-reboot",
     "vue-template-compiler": "^2.6.10",
     "webpack": "^4.41.2"
   }
