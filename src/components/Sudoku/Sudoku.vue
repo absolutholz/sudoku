@@ -15,39 +15,52 @@
 			</select>
 		</div>
 
-		<div class="grid2">
-			<cell
-				@active="setCellActive"
-				:isActive="activeRow === cell.row && activeCol === cell.col"
-				:isInvalid="cell.value && isCellInvalid(cell.row, cell.col, cell.value)"
-				:isOriginal="cell.original"
-				:isRelated="activeRow === cell.row || activeCol === cell.col || activeSubgrid === cell.subgrid"
-				:isPeer="activeValue !== -1 && activeValue === cell.value"
-				:row="cell.row"
-				:col="cell.col"
-				:subgrid="cell.subgrid"
-				:value="cell.value"
+		<ol class="grid2">
+			<li
+				:aria-label="`Subgrid ${cell.subgrid + 1}; row ${cell.row + 1}; column ${cell.col + 1}`"
 				v-for="(cell, cellIndex) in cells" :key="`cell-${cellIndex}`"
 			>
-				<template>{{ cell.value }}</template>
-			</cell>
-		</div>
+				<cell
+					@active="setCellActive"
+					:isActive="activeRow === cell.row && activeCol === cell.col"
+					:isInvalid="cell.value && isCellInvalid(cell.row, cell.col, cell.value)"
+					:isOriginal="cell.original"
+					:isRelated="activeRow === cell.row || activeCol === cell.col || activeSubgrid === cell.subgrid"
+					:isPeer="activeValue !== -1 && activeValue === cell.value"
+					:row="cell.row"
+					:col="cell.col"
+					:subgrid="cell.subgrid"
+					:value="cell.value"
+					:notes="cell.notes"
+				>
+					<template>{{ cell.value }}</template>
+				</cell>
+			</li>
+		</ol>
 
 		<div class="row">
 			<button
 				class="btn"
-				@click="setCellValue(value + 1)"
-				:disabled="activeRow === -1 || activeCol === -1"
+				@mousedown.prevent="isNotesMode ? setCellNote(value + 1) : setCellValue(value + 1)"
+				:disabled="activeIsOriginal || activeRow === -1 || activeCol === -1"
 				type="button"
 				v-for="value in Array(9).keys()"
-				:key="value"
+				:key="`entry-${value}`"
 			>
 				{{ value + 1 }}
 			</button>
 			<button
-				@click="clearCellValue"
+				@mousedown.prevent="clearCell"
 			>
 				X
+			</button>
+		</div>
+
+		<div class="row">
+			<button
+				@mousedown.prevent="toggleNotesMode"
+			>
+				notes
 			</button>
 		</div>
 	</div>
@@ -83,6 +96,8 @@ export default {
 			},
 			seconds: 0,
 			timer: null,
+			isNotesMode: false,
+			activeIsOriginal: false,
 		};
 	},
 
@@ -146,13 +161,19 @@ export default {
 			const boardString = sudoku.generate(this.difficulty);
 			this.puzzle = sudoku.board_string_to_grid(boardString).map((row, rowIndex) => {
 				return row.map((cell, colIndex) => {
-					return {
+					const oCell = {
 						value: cell !== '.' ? parseInt(cell) : null,
 						original: cell !== '.',
 						row: rowIndex,
 						col: colIndex,
 						subgrid: (Math.floor(rowIndex / 3) * 3) + Math.floor(colIndex / 3),
 					};
+
+					if (!oCell.original) {
+						oCell.notes = [false, false, false, false, false, false, false, false, false];
+					}
+
+					return oCell;
 				});
 			});
 
@@ -163,8 +184,11 @@ export default {
 			}, 1000);
 		},
 
-		setCellActive(row, col, subgrid, value/*, original*/) {
-			// console.log(row, col, subgrid, original);
+		toggleNotesMode() {
+			this.isNotesMode = !this.isNotesMode;
+		},
+
+		setCellActive(row, col, subgrid, value, original) {
 			// if (original) {
 			// 	return;
 			// }
@@ -174,6 +198,7 @@ export default {
 				this.activeSubgrid = -1;
 				this.activeCol = -1;
 				this.activeValue = -1;
+				this.activeIsOriginal = false;
 				return;
 			}
 
@@ -181,15 +206,18 @@ export default {
 			this.activeSubgrid = subgrid;
 			this.activeCol = col;
 			this.activeValue = value || -1;
+			this.activeIsOriginal = original;
 			return;
 		},
 
 		setCellValue(value) {
+			this.clearCellNotes();
+
 			this.puzzle[this.activeRow][this.activeCol].value = value;
-			this.activeRow = -1;
-			this.activeSubgrid = -1;
-			this.activeCol = -1;
-			this.activeValue = -1;
+			// this.activeRow = -1;
+			// this.activeSubgrid = -1;
+			// this.activeCol = -1;
+			// this.activeValue = -1;
 
 			if (this.isGameComplete()) {
 				const msg = [
@@ -204,8 +232,27 @@ export default {
 			}
 		},
 
+		setCellNote(value) {
+			if (!this.original) {
+				if (this.puzzle[this.activeRow][this.activeCol].value > 0) {
+					this.clearCellValue();
+				}
+
+				this.puzzle[this.activeRow][this.activeCol].notes.splice(value - 1, 1, !this.puzzle[this.activeRow][this.activeCol].notes[value - 1]);
+			}
+		},
+
+		clearCell() {
+			this.clearCellValue();
+			this.clearCellNotes();
+		},
+
 		clearCellValue() {
 			this.puzzle[this.activeRow][this.activeCol].value = null;
+		},
+
+		clearCellNotes() {
+			this.puzzle[this.activeRow][this.activeCol].notes = Array(9);
 		},
 
 		isCellInvalid(row, col, value) {
@@ -257,6 +304,8 @@ export default {
 </script>
 
 <style lang="scss">
+@import "~scss-mixins-functions-variables/scss/reset/list/reset-list-mixins";
+
 .sudoku {
 	--bg: #fffffe;
 	--color: #111;
@@ -282,15 +331,17 @@ export default {
 	$sudoku-grid-gap-thickness: 1px;
 	$length: 70%;
 
+	@include reset-list;
+
 	display: grid;
-	font-size: 7vw;
+	font-size: 2rem;
 	grid-gap: $sudoku-grid-gap-thickness;
 	grid-template-columns: repeat(9, 1fr);
 	max-width: 100%;
 	position: relative;
 
 	@media screen and (orientation: landscape) {
-		font-size: 7vh;
+		// font-size: 7vh;
 		// max-height: 100vh;
 	}
 
@@ -306,47 +357,62 @@ export default {
 	}
 
 	> * {
+		background: white;
+		padding-bottom: 100%;
 		position: relative;
 
-		&:nth-child(3n) {
-			&::before {
-				background: var(--color);
-				bottom: 0;
-				content: "";
-				opacity: 0.75;
-				position: absolute;
-				right: $sudoku-grid-gap-thickness * -1;
-				top: 0;
-				width: $sudoku-grid-gap-thickness * 3;
-			}
-		}
-
-		&:nth-child(9n) {
-			&::before {
-				display: none;
-			}
-		}
-
-		&:nth-child(n + #{(9 * (3 - 1)) + 1}):nth-child(-n + #{9 * 3}),
-		&:nth-child(n + #{(9 * (6 - 1)) + 1}):nth-child(-n + #{9 * 6}) {
-			&::after {
-				background: var(--color);
-				bottom: $sudoku-grid-gap-thickness * -1;
-				content: "";
-				height: $sudoku-grid-gap-thickness * 3;
-				left: 0;
-				opacity: 0.75;
-				position: absolute;
-				right: 0;
-			}
-		}
-
-		&:nth-last-child(-n + 9) {
-			&::after {
-				display: none;
-			}
+		> * {
+			height: 100%;
+			left: 0;
+			position: absolute;
+			top: 0;
+			width: 100%;
 		}
 	}
+
+
+	// > * {
+	// 	position: relative;
+
+	// 	&:nth-child(3n) {
+	// 		&::before {
+	// 			background: var(--color);
+	// 			bottom: 0;
+	// 			content: "";
+	// 			opacity: 0.75;
+	// 			position: absolute;
+	// 			right: $sudoku-grid-gap-thickness * -1;
+	// 			top: 0;
+	// 			width: $sudoku-grid-gap-thickness * 3;
+	// 		}
+	// 	}
+
+	// 	&:nth-child(9n) {
+	// 		&::before {
+	// 			display: none;
+	// 		}
+	// 	}
+
+	// 	&:nth-child(n + #{(9 * (3 - 1)) + 1}):nth-child(-n + #{9 * 3}),
+	// 	&:nth-child(n + #{(9 * (6 - 1)) + 1}):nth-child(-n + #{9 * 6}) {
+	// 		&::after {
+	// 			background: var(--color);
+	// 			bottom: $sudoku-grid-gap-thickness * -1;
+	// 			content: "";
+	// 			height: $sudoku-grid-gap-thickness * 3;
+	// 			left: 0;
+	// 			opacity: 0.75;
+	// 			position: absolute;
+	// 			right: 0;
+	// 		}
+	// 	}
+
+	// 	&:nth-last-child(-n + 9) {
+	// 		&::after {
+	// 			display: none;
+	// 		}
+	// 	}
+	// }
 
 // .cell {
 // 	// border: 1px solid #bbb;

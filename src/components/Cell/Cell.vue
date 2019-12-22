@@ -8,6 +8,7 @@
 			'cell--invalid': isInvalid,
 			'cell--peer': isPeer,
 		}"
+		:id="`cell-${subgrid}x${row}x${col}`"
 	>
 		<button
 			class="cell__content"
@@ -16,12 +17,19 @@
 		>
 			{{ value }}
 		</button>
+		<notes v-if="hasNotes" :notes="notes" />
 	</div>
 </template>
 
 <script>
+import Notes from './../../components/Notes';
+
 export default {
-	name: "SudokuCell",
+	name: 'SudokuCell',
+
+	components: {
+		Notes,
+	},
 
 	props: {
 		isOriginal: {
@@ -66,12 +74,21 @@ export default {
 			required: false,
 			type: Number,
 		},
+		notes: {
+			required: false,
+			type: Array,
+		},
+	},
+
+	computed: {
+		hasNotes() {
+			return this.notes && !!this.notes.filter(value => value).length;
+		},
 	},
 
 	methods: {
 		setActive() {
-			console.log(this);
-			this.$emit('active', this.row, this.col, this.subgrid, this.value);
+			this.$emit('active', this.row, this.col, this.subgrid, this.value, this.isOriginal);
 		},
 	},
 };
@@ -79,86 +96,94 @@ export default {
 
 <style lang="scss">
 .cell {
-	background: var(--bg);
-	// line-height: 1;
-	padding-bottom: 100%;
-	position: relative;
-	// width: 100%;
-
 	&__content {
-		align-items: center;
 		background: none;
 		border: 0;
-		display: flex;
 		height: 100%;
-		justify-content: center;
-		left: 0;
-		position: absolute;
-		top: 0;
-		transition: all 150ms;
+		padding: 0;
 		width: 100%;
-		z-index: 0;
-
-		&::before {
-			bottom: 0;
-			content: "";
-			left: 0;
-			position: absolute;
-			right: 0;
-			top: 0;
-			transition: all 150ms;
-			z-index: -1;
-		}
 	}
 
-	&--original {
-		.cell__content {
-			opacity: 0.75;
+	// // background: var(--bg);
+	// // line-height: 1;
+	// padding-bottom: 100%;
+	// position: relative;
+	// // width: 100%;
 
-			&::before {
-				background: var(--color);
-				opacity: 0.1;
-			}
-		}
-	}
+	// &__content {
+	// 	align-items: center;
+	// 	// background: none;
+	// 	border: 0;
+	// 	display: flex;
+	// 	height: 100%;
+	// 	justify-content: center;
+	// 	left: 0;
+	// 	position: absolute;
+	// 	top: 0;
+	// 	transition: all 150ms;
+	// 	width: 100%;
+	// 	z-index: 0;
 
-	&--related {
-		.cell__content {
+	// 	&::before {
+	// 		bottom: 0;
+	// 		content: "";
+	// 		left: 0;
+	// 		position: absolute;
+	// 		right: 0;
+	// 		top: 0;
+	// 		transition: all 150ms;
+	// 		z-index: -1;
+	// 	}
+	// }
 
-			&::before {
-				background: var(--highlight);
-				opacity: 0.4;
-			}
-		}
-	}
+	// &--original {
+	// 	.cell__content {
+	// 		opacity: 0.75;
 
-	&--peer {
-		.cell__content {
+	// 		&::before {
+	// 			// background: var(--color);
+	// 			opacity: 0.1;
+	// 		}
+	// 	}
+	// }
 
-			&::before {
-				background: var(--highlight);
-				opacity: 0.8;
-			}
-		}
-	}
+	// &--related {
+	// 	.cell__content {
 
-	&--active {
-		.cell__content {
-			border: 4px solid;
-			border-radius: 8px;
-			color: var(--color);
-			font-size: 1.4em;
-			height: 140%;
-			left: -20%;
-			top: -20%;
-			width: 140%;
-			z-index: 1;
+	// 		&::before {
+	// 			// background: var(--highlight);
+	// 			opacity: 0.4;
+	// 		}
+	// 	}
+	// }
 
-			&::before {
-				background: var(--bg);
-			}
-		}
-	}
+	// &--peer {
+	// 	.cell__content {
+
+	// 		&::before {
+	// 			// background: var(--highlight);
+	// 			opacity: 0.8;
+	// 		}
+	// 	}
+	// }
+
+	// &--active {
+	// 	.cell__content {
+	// 		border: 4px solid;
+	// 		border-radius: 8px;
+	// 		color: var(--color);
+	// 		font-size: 1.4em;
+	// 		height: 140%;
+	// 		left: -20%;
+	// 		top: -20%;
+	// 		width: 140%;
+	// 		z-index: 1;
+
+	// 		&::before {
+	// 			// background: var(--bg);
+	// 		}
+	// 	}
+	// }
 
 
 	// 	.cell__content::before {
