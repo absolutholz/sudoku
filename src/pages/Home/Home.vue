@@ -1,30 +1,26 @@
 <template>
 	<div>
 		<h1>Sudoku</h1>
-		<form @submit.prevent="selectDifficulty()">
 
-			<fieldset>
-				<legend>Difficulty</legend>
-
-				<label
-					v-for="(display, level) in levels" :key="`difficulty-level-${ level }`"
-				>
-					<input
-						checked="level === difficulty"
-						:id="`difficulty-level-${ level }`"
-						name="difficulty-level"
-						type="radio"
-						:value="level"
-						v-model="difficulty"
-					>{{ display }}
-				</label>
-			</fieldset>
-
+		<div v-if="$store.state.puzzle.length">
 			<button
-				:disabled="!difficulty"
-				type="submit"
-			>Start</button>
-		</form>
+				@click="resumeGame()"
+			>Resume game</button>
+		</div>
+
+		<div>
+			Start a new game
+			<div v-for="(display, level) in levels" :key="`difficulty-level-${ level }`">
+				<button
+					@click="startNewGame(level)"
+				>{{ display }}</button>
+			</div>
+		</div>
+
+		<div>
+			<router-link to="/settings">Settings</router-link>
+		</div>
+
 	</div>
 </template>
 
@@ -47,12 +43,17 @@ export default {
 	},
 
 	methods: {
-		selectDifficulty() {
+		startNewGame (difficulty) {
+			this.$store.commit('generatePuzzle', { difficulty });
+
 			this.$router.push({
 				name: 'game',
-				params: {
-					difficulty: this.difficulty,
-				},
+			});
+		},
+
+		resumeGame () {
+			this.$router.push({
+				name: 'game',
 			});
 		},
 	},

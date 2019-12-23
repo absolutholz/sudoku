@@ -5,6 +5,8 @@ import Home from './pages/Home';
 import Game from './pages/Game';
 import Settings from './pages/Settings';
 
+import store from './store';
+
 Vue.use(Router);
 
 const router = new Router({
@@ -22,15 +24,22 @@ const router = new Router({
 			component: Settings,
 		},
 		{
-			path: '/game/:difficulty',
+			path: '/game',
 			name: 'game',
 			component: Game,
+			beforeEnter: (to, from, next) => {
+				console.log(store.state);
+				if (!store.state.puzzle.length) {
+					next('/');
+				} else {
+					next();
+				}
+			},
 		},
-		// {
-		// 	path: '*',
-		// 	name: 'notFound',
-		// 	component: NotFound,
-		// },
+		{
+			path: '*',
+			redirect: '/',
+		},
 	],
 });
 

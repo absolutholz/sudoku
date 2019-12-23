@@ -15,5 +15,10 @@ export default {
 	components: {
 		Sudoku,
 	},
+
+	beforeRouteLeave (to, from, next) {
+		this.$store.dispatch('pauseTimer');
+		next();
+	},
 };
 </script>

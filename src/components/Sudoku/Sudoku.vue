@@ -6,7 +6,7 @@
 			<router-link to="/">Home</router-link>
 			<router-link to="/settings">Settings</router-link>
 
-			<timer :seconds="seconds" />
+			<timer :seconds="$store.state.seconds" @pause="pausePuzzle" />
 		</div>
 
 		<ol class="grid2">
@@ -61,8 +61,6 @@
 </template>
 
 <script>
-import { sudoku } from 'sudoku.js/sudoku.js';
-
 import Cell from './../../components/Cell';
 import Timer from './../../components/Timer';
 
@@ -76,44 +74,22 @@ export default {
 
 	data() {
 		return {
-			puzzle: [],
 			activeRow: -1,
 			activeSubgrid: -1,
 			activeCol: -1,
 			activeValue: -1,
-			seconds: 0,
-			timer: null,
 			isNotesMode: false,
 			activeIsOriginal: false,
 		};
 	},
 
-	// mounted() {
-	// 	this.generatePuzzle();
-	// },
-
 	computed: {
-		difficulty() {
-			return this.$route.params.difficulty;
-		},
-
-		// formattedTime() {
-		// 	const min = Math.floor(this.seconds / 60);
-		// 	const sec = this.seconds % 60;
-
-		// 	return `${min > 9 ? min : `0${min}`}:${sec > 9 ? sec : `0${sec}`}`;
-		// },
-
 		cells() {
 			const cells = Array(81);
 
-			if (!this.puzzle.length) {
-				this.generatePuzzle();
-			}
-
 			for (let r = 0; r < 9; r += 1) {
 				for (let c = 0; c < 9; c += 1) {
-					cells[(r * 9) + c] = this.puzzle[r][c];
+					cells[(r * 9) + c] = this.$store.state.puzzle[r][c];
 				}
 			}
 
@@ -132,7 +108,7 @@ export default {
 		},
 
 		rows() {
-			return this.puzzle;
+			return this.$store.state.puzzle;
 		},
 
 		subgrids() {
@@ -148,31 +124,14 @@ export default {
 	},
 
 	methods: {
-		generatePuzzle() {
-			const boardString = sudoku.generate(this.difficulty);
-			this.puzzle = sudoku.board_string_to_grid(boardString).map((row, rowIndex) => {
-				return row.map((cell, colIndex) => {
-					const oCell = {
-						value: cell !== '.' ? parseInt(cell) : null,
-						original: cell !== '.',
-						row: rowIndex,
-						col: colIndex,
-						subgrid: (Math.floor(rowIndex / 3) * 3) + Math.floor(colIndex / 3),
-					};
+		// generatePuzzle() {
+		// 	this.$store.commit('reset');
+		// 	this.$store.dispatch('stopTimer');
+		// 	this.$store.dispatch('startTimer');
+		// },
 
-					if (!oCell.original) {
-						oCell.notes = [false, false, false, false, false, false, false, false, false];
-					}
-
-					return oCell;
-				});
-			});
-
-			this.seconds = 0;
-			clearInterval(this.timer);
-			this.timer = setInterval(() => {
-				this.seconds += 1;
-			}, 1000);
+		pausePuzzle() {
+			this.$store.dispatch('pauseTimer');
 		},
 
 		toggleNotesMode() {
@@ -202,48 +161,43 @@ export default {
 		},
 
 		setCellValue(value) {
-			this.clearCellNotes();
-
-			this.puzzle[this.activeRow][this.activeCol].value = value;
-			// this.activeRow = -1;
-			// this.activeSubgrid = -1;
-			// this.activeCol = -1;
-			// this.activeValue = -1;
-
-			if (this.isGameComplete()) {
-				const msg = [
-					'Success!',
-					'\n',
-					// `Difficulty: ${this.levels[this.difficulty]}`,
-					`Time: ${this.formattedTime}`,
-				];
-
-				alert(msg.join("\n"));
-				this.generatePuzzle();
-			}
+			this.$store.commit('clearCellNotes', {
+				row: this.activeRow,
+				col: this.activeCol,
+			});
+			this.$store.commit('setCellValue', {
+				row: this.activeRow,
+				col: this.activeCol,
+				value,
+			});
 		},
 
 		setCellNote(value) {
 			if (!this.original) {
-				if (this.puzzle[this.activeRow][this.activeCol].value > 0) {
-					this.clearCellValue();
+				if (this.$store.state.puzzle[this.activeRow][this.activeCol].value > 0) {
+					this.$store.commit('clearCellValue', {
+						row: this.activeRow,
+						col: this.activeCol,
+					});
 				}
 
-				this.puzzle[this.activeRow][this.activeCol].notes.splice(value - 1, 1, !this.puzzle[this.activeRow][this.activeCol].notes[value - 1]);
+				this.$store.commit('setCellNote', {
+					row: this.activeRow,
+					col: this.activeCol,
+					value,
+				});
 			}
 		},
 
 		clearCell() {
-			this.clearCellValue();
-			this.clearCellNotes();
-		},
-
-		clearCellValue() {
-			this.puzzle[this.activeRow][this.activeCol].value = null;
-		},
-
-		clearCellNotes() {
-			this.puzzle[this.activeRow][this.activeCol].notes = Array(9);
+			this.$store.commit('clearCellValue', {
+				row: this.activeRow,
+				col: this.activeCol,
+			});
+			this.$store.commit('clearCellNotes', {
+				row: this.activeRow,
+				col: this.activeCol,
+			});
 		},
 
 		isCellInvalid(row, col, value) {
@@ -252,13 +206,13 @@ export default {
 			}
 
 			for (let c = 0; c < 9; c += 1) {
-				if (this.puzzle[row][c].value === value && c !== col) {
+				if (this.$store.state.puzzle[row][c].value === value && c !== col) {
 					return true;
 				}
 			}
 
 			for (let r = 0; r < 9; r += 1) {
-				if (this.puzzle[r][col].value === value && r !== row) {
+				if (this.$store.state.puzzle[r][col].value === value && r !== row) {
 					return true;
 				}
 			}
@@ -269,7 +223,7 @@ export default {
 			for (let r = rowStart; r < rowStart + 3; r += 1) {
 				for (let c = colStart; c < colStart + 3; c += 1) {
 					if (
-						this.puzzle[r][c].value === value &&
+						this.$store.state.puzzle[r][c].value === value &&
 						!(r === row && c === col)
 					) {
 						return true;
@@ -283,13 +237,17 @@ export default {
 		isGameComplete() {
 			for (let r = 0; r < 9; r += 1) {
 				for (let c = 0; c < 9; c += 1) {
-					if (this.isCellInvalid(r, c, this.puzzle[r][c].value)) {
+					if (this.isCellInvalid(r, c, this.$store.state.puzzle[r][c].value)) {
 						return false;
 					}
 				}
 			}
 			return true;
 		},
+	},
+
+	mounted() {
+		this.$store.dispatch('startTimer');
 	},
 };
 </script>
