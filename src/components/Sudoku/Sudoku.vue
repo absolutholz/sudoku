@@ -6,8 +6,7 @@
 			<router-link to="/">Home</router-link>
 			<router-link to="/settings">Settings</router-link>
 
-			<strong>{{ formattedTime }}</strong>
-			<button>Pause</button>
+			<timer :seconds="seconds" />
 		</div>
 
 		<ol class="grid2">
@@ -65,12 +64,14 @@
 import { sudoku } from 'sudoku.js/sudoku.js';
 
 import Cell from './../../components/Cell';
+import Timer from './../../components/Timer';
 
 export default {
 	name: 'Sudoku',
 
 	components: {
 		Cell,
+		Timer,
 	},
 
 	data() {
@@ -96,12 +97,12 @@ export default {
 			return this.$route.params.difficulty;
 		},
 
-		formattedTime() {
-			const min = Math.floor(this.seconds / 60);
-			const sec = this.seconds % 60;
+		// formattedTime() {
+		// 	const min = Math.floor(this.seconds / 60);
+		// 	const sec = this.seconds % 60;
 
-			return `${min > 9 ? min : `0${min}`}:${sec > 9 ? sec : `0${sec}`}`;
-		},
+		// 	return `${min > 9 ? min : `0${min}`}:${sec > 9 ? sec : `0${sec}`}`;
+		// },
 
 		cells() {
 			const cells = Array(81);
