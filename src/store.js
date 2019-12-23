@@ -58,6 +58,8 @@ const store = new Vuex.Store({
 					return oCell;
 				});
 			});
+
+			state.seconds = 0;
 		},
 	},
 
