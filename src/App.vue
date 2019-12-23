@@ -1,18 +1,12 @@
 <template>
 	<div id="app">
-		<sudoku />
+		<router-view/>
 	</div>
 </template>
 
 <script>
-import Sudoku from './components/Sudoku';
-
 export default {
-	name: 'app',
-
-	components: {
-		Sudoku,
-	},
+	name: 'App',
 };
 </script>
 

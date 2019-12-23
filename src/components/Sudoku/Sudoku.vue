@@ -3,16 +3,11 @@
 		<div class="row">
 			<h2>Sudoku</h2>
 
-			<strong>{{ formattedTime }}</strong>
+			<router-link to="/">Home</router-link>
+			<router-link to="/settings">Settings</router-link>
 
-			<select @change="generatePuzzle()" v-model="difficulty">
-				<option
-					v-for="(display, level) in levels"
-					:key="level"
-					:value="level"
-					>{{ display }}</option
-				>
-			</select>
+			<strong>{{ formattedTime }}</strong>
+			<button>Pause</button>
 		</div>
 
 		<ol class="grid2">
@@ -81,19 +76,10 @@ export default {
 	data() {
 		return {
 			puzzle: [],
-			difficulty: 'easy',
 			activeRow: -1,
 			activeSubgrid: -1,
 			activeCol: -1,
 			activeValue: -1,
-			levels: {
-				'easy': 'Easy',
-				'medium': 'Medium',
-				'hard': 'Hard',
-				'very-hard': 'Very Hard',
-				'insane': 'Insane',
-				'inhuman': 'Inhuman',
-			},
 			seconds: 0,
 			timer: null,
 			isNotesMode: false,
@@ -106,6 +92,10 @@ export default {
 	// },
 
 	computed: {
+		difficulty() {
+			return this.$route.params.difficulty;
+		},
+
 		formattedTime() {
 			const min = Math.floor(this.seconds / 60);
 			const sec = this.seconds % 60;
@@ -223,7 +213,7 @@ export default {
 				const msg = [
 					'Success!',
 					'\n',
-					`Difficulty: ${this.levels[this.difficulty]}`,
+					// `Difficulty: ${this.levels[this.difficulty]}`,
 					`Time: ${this.formattedTime}`,
 				];
 
