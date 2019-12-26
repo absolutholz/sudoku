@@ -1,0 +1,47 @@
+// https://www.w3schools.com/colors/colors_converter.asp
+@function rgb2HslList($r, $g, $b) {
+	$rgb: ($r / 255) ($g / 255) ($b / 255);
+	$min: nth($rgb, 1);
+	$max: nth($rgb, 1);
+	$max-color-index: 1;
+
+	@for $i from 1 through length($rgb) - 1 {
+		@if (nth($rgb, $i + 1) <= $min) {
+			$min: nth($rgb, $i + 1);
+		}
+		@if (nth($rgb, $i + 1) >= $max) {
+			$max: nth($rgb, $i + 1);
+			$max-color-index: $i + 1;
+		}
+	}
+
+	$h: $max - $min;
+	@if ($h <= 0) {
+		$h: 0;
+	} @else if ($max-color-index == 1) {
+		$h: (nth($rgb, 2) - nth($rgb, 3)) / $h;
+	} @else if ($max-color-index == 2) {
+		$h: 2 + (nth($rgb, 3) - nth($rgb, 1)) / $h;
+	} @else if ($max-color-index == 3) {
+		$h: 4 + (nth($rgb, 1) - nth($rgb, 2)) / $h;
+	}
+	$h: $h * 60;
+	@if ($h < 0) {
+		$h: $h + 360;
+	}
+
+	$l: ($min + $max) / 2;
+
+	$s: 0;
+	@if ($min == $max) {
+		$s: 0;
+	} @else {
+		@if ($l < 0.5) {
+			$s: ($max - $min) / ($max + $min);
+		} @else {
+			$s: ($max - $min) / (2 - $max - $min);
+		}
+	}
+
+	@return $h ($s * 100%) ($l * 100%);
+}

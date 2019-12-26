@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="l-page-container">
 		<h1>Settings</h1>
 
 		<form>

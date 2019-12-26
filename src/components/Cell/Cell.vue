@@ -1,5 +1,6 @@
 <template>
 	<div
+		:aria-label="`Subgrid ${ subgrid + 1 }, row ${ row + 1 }, column ${ col + 1 }`"
 		class="cell"
 		:class="{
 			'cell--active': isActive,
@@ -91,135 +92,84 @@ export default {
 			this.$emit('active', this.row, this.col, this.subgrid, this.value, this.isOriginal);
 		},
 	},
+
+	mounted: function () {
+		this.$el.closest('.sudoku-grid').style.fontSize = `${this.$el.offsetHeight * 0.6 / 16}rem`;
+	},
 };
 </script>
 
 <style lang="scss">
 .cell {
+	--cell-bg-hue: var(--highlight-hue);
+	--cell-bg-sat: var(--highlight-sat);
+	--cell-bg-lum: 100%;
+	--cell-bg-alpha: 1;
+
+	// https://github.com/sass/sass/issues/469
+	background: unquote("hsl(var(--cell-bg-hue), var(--cell-bg-sat), var(--cell-bg-lum), var(--cell-bg-alpha))");
+	// color: unquote("hsl(var(--highlight-hue), var(--highlight-sat), var(--highlight-lum))");
+	font-family: 'Rubik', sans-serif;
+	height: 100%;
+	line-height: 1;
+	left: 0;
+	position: absolute;
+	top: 0;
+	transition-property: left, top, height, width, background;
+	transition-duration: 250ms;
+	width: 100%;
+
 	&__content {
 		background: none;
 		border: 0;
+		color: inherit;
 		height: 100%;
+		left: 0;
 		padding: 0;
+		position: absolute;
+		top: 0;
 		width: 100%;
 	}
 
-	// // background: var(--bg);
-	// // line-height: 1;
-	// padding-bottom: 100%;
-	// position: relative;
-	// // width: 100%;
+	&--original {
+		--cell-bg-alpha: 0.03;
+		--cell-bg-lum: 0%;
+		color: var(--typo);
+		font-size: 0.8em;
+	}
 
-	// &__content {
-	// 	align-items: center;
-	// 	// background: none;
-	// 	border: 0;
-	// 	display: flex;
-	// 	height: 100%;
-	// 	justify-content: center;
-	// 	left: 0;
-	// 	position: absolute;
-	// 	top: 0;
-	// 	transition: all 150ms;
-	// 	width: 100%;
-	// 	z-index: 0;
+	&--related,
+	&--peer {
+		--cell-bg-lum: var(--highlight-lum);
+	}
 
-	// 	&::before {
-	// 		bottom: 0;
-	// 		content: "";
-	// 		left: 0;
-	// 		position: absolute;
-	// 		right: 0;
-	// 		top: 0;
-	// 		transition: all 150ms;
-	// 		z-index: -1;
-	// 	}
-	// }
+	&--related {
+		--cell-bg-alpha: 0.2;
+	}
 
-	// &--original {
-	// 	.cell__content {
-	// 		opacity: 0.75;
+	&--peer {
+		--alpha: 0.5;
+	}
 
-	// 		&::before {
-	// 			// background: var(--color);
-	// 			opacity: 0.1;
-	// 		}
-	// 	}
-	// }
+	&--invalid {
+		--cell-bg-hue: var(--invalid-hue);
+		--cell-bg-lum: 50%;
+		--cell-bg-alpha: 0.25;
+	}
 
-	// &--related {
-	// 	.cell__content {
+	&--active {
+		--cell-bg-lum: 100%;
+		--cell-bg-alpha: 1;
 
-	// 		&::before {
-	// 			// background: var(--highlight);
-	// 			opacity: 0.4;
-	// 		}
-	// 	}
-	// }
-
-	// &--peer {
-	// 	.cell__content {
-
-	// 		&::before {
-	// 			// background: var(--highlight);
-	// 			opacity: 0.8;
-	// 		}
-	// 	}
-	// }
-
-	// &--active {
-	// 	.cell__content {
-	// 		border: 4px solid;
-	// 		border-radius: 8px;
-	// 		color: var(--color);
-	// 		font-size: 1.4em;
-	// 		height: 140%;
-	// 		left: -20%;
-	// 		top: -20%;
-	// 		width: 140%;
-	// 		z-index: 1;
-
-	// 		&::before {
-	// 			// background: var(--bg);
-	// 		}
-	// 	}
-	// }
-
-
-	// 	.cell__content::before {
-	// 		// background: radial-gradient(var(--color) 50%, transparent 50%);
-	// 		background: var(--color);
-	// 		bottom: 0;
-	// 		content: "";
-	// 		left: 0;
-	// 		opacity: 0.1;
-	// 		position: absolute;
-	// 		right: 0;
-	// 		top: 0;
-	// 		z-index: -1;
-	// 	}
-	// }
-
-	// &--active {
-	// 	.cell__content {
-	// 		background: var(--bg);
-	// 		border: 4px solid;
-	// 		border-radius: 8px;
-	// 		color: var(--color);
-	// 		font-size: 1.4em;
-	// 		height: 140%;
-	// 		left: -20%;
-	// 		top: -20%;
-	// 		width: 140%;
-	// 		z-index: 1;
-	// 	}
-	// }
-
-	// &--related:not(.active) {
-	// 	.cell__content {
-	// 		background: var(--highlight);
-	// 		color: var(--color);
-	// 	}
-	// }
+		border: 4px solid;
+		border-radius: 8px;
+		font-size: 1.4em;
+		height: 140%;
+		left: -20%;
+		position: absolute;
+		top: -20%;
+		width: 140%;
+		z-index: 1;
+	}
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="l-page-container">
 		<h1>Sudoku</h1>
 
 		<div v-if="$store.state.puzzle.length">

@@ -9,26 +9,31 @@
 			<timer :seconds="$store.state.seconds" @pause="pausePuzzle" />
 		</div>
 
-		<ol class="grid2">
+		<ol class="sudoku-grid">
 			<li
-				:aria-label="`Subgrid ${cell.subgrid + 1}; row ${cell.row + 1}; column ${cell.col + 1}`"
-				v-for="(cell, cellIndex) in cells" :key="`cell-${cellIndex}`"
+				:aria-label="`Subgrid ${ subgridIndex + 1 }`"
+				v-for="(subgrid, subgridIndex) in subgrids" :key="`subgrid-${ subgridIndex }`"
 			>
-				<cell
-					@active="setCellActive"
-					:isActive="activeRow === cell.row && activeCol === cell.col"
-					:isInvalid="cell.value && isCellInvalid(cell.row, cell.col, cell.value)"
-					:isOriginal="cell.original"
-					:isRelated="activeRow === cell.row || activeCol === cell.col || activeSubgrid === cell.subgrid"
-					:isPeer="activeValue !== -1 && activeValue === cell.value"
-					:row="cell.row"
-					:col="cell.col"
-					:subgrid="cell.subgrid"
-					:value="cell.value"
-					:notes="cell.notes"
-				>
-					<template>{{ cell.value }}</template>
-				</cell>
+				<ol class="sudoku-subgrid">
+					<li
+						v-for="(cell, cellIndex) in subgrid" :key="`cell-${ cellIndex }`">
+						<cell
+							@active="setCellActive"
+							:isActive="activeRow === cell.row && activeCol === cell.col"
+							:isInvalid="cell.value && isCellInvalid(cell.row, cell.col, cell.value)"
+							:isOriginal="cell.original"
+							:isRelated="activeRow === cell.row || activeCol === cell.col || activeSubgrid === cell.subgrid"
+							:isPeer="activeValue !== -1 && activeValue === cell.value"
+							:row="cell.row"
+							:col="cell.col"
+							:subgrid="cell.subgrid"
+							:value="cell.value"
+							:notes="cell.notes"
+						>
+							<template>{{ cell.value }}</template>
+						</cell>
+					</li>
+				</ol>
 			</li>
 		</ol>
 
@@ -254,6 +259,59 @@ export default {
 
 <style lang="scss">
 @import "~scss-mixins-functions-variables/scss/reset/list/reset-list-mixins";
+
+.sudoku-grid {
+	--bg: #fffffe;
+	--type: #111;
+	--highlight: lightskyblue;
+
+	@include reset-list;
+
+	display: grid;
+	grid-gap: 2px;
+	grid-template-columns: repeat(3, 1fr);
+	position: relative;
+	z-index: 0;
+
+	&::before {
+		background: var(--type);
+		bottom: 0;
+		content: "";
+		left: 0;
+		opacity: 0.65;
+		position: absolute;
+		right: 0;
+		top: 0;
+		z-index: -1;
+	}
+}
+
+.sudoku-subgrid {
+	@include reset-list;
+
+	background: var(--bg);
+	display: grid;
+	grid-gap: 1px;
+	grid-template-columns: repeat(3, 1fr);
+	position: relative;
+
+	&::before {
+		background: var(--type);
+		bottom: 0;
+		content: "";
+		left: 0;
+		opacity: 0.25;
+		position: absolute;
+		right: 0;
+		top: 0;
+	}
+
+	> * {
+		background: white;
+		padding-bottom: 100%;
+		position: relative;
+	}
+}
 
 .sudoku {
 	--bg: #fffffe;

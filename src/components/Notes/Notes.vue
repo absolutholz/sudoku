@@ -33,8 +33,9 @@ export default {
 .notes {
 	@include reset-list;
 
+	color: var(--typo);
 	display: grid;
-	font-size: 0.3em;
+	font-size: 0.5em;
 	grid-template-columns: repeat(3, 1fr);
 	padding: 0.2em;
 	pointer-events: none;
