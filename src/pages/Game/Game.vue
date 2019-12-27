@@ -7,11 +7,17 @@
 			<router-link to="/settings">Settings</router-link>
 		</nav>
 
+		<timer
+			:seconds="$store.state.seconds"
+			@pause="pausePuzzle"
+		/>
+
 		<sudoku />
 	</div>
 </template>
 
 <script>
+import Timer from './../../components/Timer';
 import Sudoku from './../../components/Sudoku';
 
 export default {
@@ -19,11 +25,18 @@ export default {
 
 	components: {
 		Sudoku,
+		Timer,
 	},
 
 	beforeRouteLeave (to, from, next) {
 		this.$store.dispatch('pauseTimer');
 		next();
+	},
+
+	methods: {
+		pausePuzzle() {
+			this.$store.dispatch('pauseTimer');
+		},
 	},
 };
 </script>

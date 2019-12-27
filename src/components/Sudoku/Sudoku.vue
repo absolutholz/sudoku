@@ -1,12 +1,5 @@
 <template>
 	<div class="sudoku">
-		<div class="row">
-			<timer
-				:seconds="$store.state.seconds"
-				@pause="pausePuzzle"
-			/>
-		</div>
-
 		<ol class="sudoku-grid">
 			<li
 				:aria-label="`Subgrid ${ subgridIndex + 1 }`"
@@ -17,6 +10,7 @@
 						v-for="(cell, cellIndex) in subgrid" :key="`cell-${ cellIndex }`">
 						<cell
 							@active="setCellActive"
+							:activeDigit="activeValue"
 							:isActive="activeRow === cell.row && activeCol === cell.col"
 							:isInvalid="$store.state.displayErrors && (cell.value && isCellInvalid(cell.row, cell.col, cell.value))"
 							:isOriginal="cell.original"
@@ -65,14 +59,12 @@
 
 <script>
 import Cell from './../../components/Cell';
-import Timer from './../../components/Timer';
 
 export default {
 	name: 'Sudoku',
 
 	components: {
 		Cell,
-		Timer,
 	},
 
 	data() {
@@ -127,16 +119,6 @@ export default {
 	},
 
 	methods: {
-		// generatePuzzle() {
-		// 	this.$store.commit('reset');
-		// 	this.$store.dispatch('stopTimer');
-		// 	this.$store.dispatch('startTimer');
-		// },
-
-		pausePuzzle() {
-			this.$store.dispatch('pauseTimer');
-		},
-
 		toggleNotesMode() {
 			this.isNotesMode = !this.isNotesMode;
 		},
@@ -173,6 +155,7 @@ export default {
 				col: this.activeCol,
 				value,
 			});
+			this.activeValue = value || -1;
 		},
 
 		setCellNote(value) {
@@ -309,171 +292,6 @@ export default {
 		padding-bottom: 100%;
 		position: relative;
 	}
-}
-
-.sudoku {
-	--bg: #fffffe;
-	--color: #111;
-	--highlight: lightskyblue;
-
-	// max-width: 420px;
-	background: var(--bg);
-	color: var(--color);
-}
-
-// .row {
-// 	align-items: center;
-// 	display: flex;
-// 	justify-content: space-between;
-// }
-
-// .grid {
-// 	margin: 0.5rem auto 1rem;
-// 	width: 360px;
-// }
-
-.grid2 {
-	$sudoku-grid-gap-thickness: 1px;
-	$length: 70%;
-
-	@include reset-list;
-
-	display: grid;
-	font-size: 2rem;
-	grid-gap: $sudoku-grid-gap-thickness;
-	grid-template-columns: repeat(9, 1fr);
-	max-width: 100%;
-	position: relative;
-
-	@media screen and (orientation: landscape) {
-		// font-size: 7vh;
-		// max-height: 100vh;
-	}
-
-	&::before {
-		background: var(--color);
-		bottom: 0;
-		content: "";
-		left: 0;
-		opacity: 0.25;
-		position: absolute;
-		right: 0;
-		top: 0;
-	}
-
-	> * {
-		background: white;
-		padding-bottom: 100%;
-		position: relative;
-
-		> * {
-			height: 100%;
-			left: 0;
-			position: absolute;
-			top: 0;
-			width: 100%;
-		}
-	}
-
-
-	// > * {
-	// 	position: relative;
-
-	// 	&:nth-child(3n) {
-	// 		&::before {
-	// 			background: var(--color);
-	// 			bottom: 0;
-	// 			content: "";
-	// 			opacity: 0.75;
-	// 			position: absolute;
-	// 			right: $sudoku-grid-gap-thickness * -1;
-	// 			top: 0;
-	// 			width: $sudoku-grid-gap-thickness * 3;
-	// 		}
-	// 	}
-
-	// 	&:nth-child(9n) {
-	// 		&::before {
-	// 			display: none;
-	// 		}
-	// 	}
-
-	// 	&:nth-child(n + #{(9 * (3 - 1)) + 1}):nth-child(-n + #{9 * 3}),
-	// 	&:nth-child(n + #{(9 * (6 - 1)) + 1}):nth-child(-n + #{9 * 6}) {
-	// 		&::after {
-	// 			background: var(--color);
-	// 			bottom: $sudoku-grid-gap-thickness * -1;
-	// 			content: "";
-	// 			height: $sudoku-grid-gap-thickness * 3;
-	// 			left: 0;
-	// 			opacity: 0.75;
-	// 			position: absolute;
-	// 			right: 0;
-	// 		}
-	// 	}
-
-	// 	&:nth-last-child(-n + 9) {
-	// 		&::after {
-	// 			display: none;
-	// 		}
-	// 	}
-	// }
-
-// .cell {
-// 	// border: 1px solid #bbb;
-// 	cursor: pointer;
-// 	display: block;
-// 	font-size: 24px;
-// 	line-height: 40px;
-// 	height: 40px;
-// 	position: relative;
-// 	text-align: center;
-// 	width: 40px;
-
-// 	&::before,
-// 	&::after {
-// 		background: var(--color);
-// 		content: "";
-// 		opacity: 0.25;
-// 		position: absolute;
-// 	}
-
-// 	&::before {
-// 		bottom: (100% - $length) / 2;
-// 		left: 100%;
-// 		top: (100% - $length) / 2;
-// 		width: $sudoku-grid-gap-thickness;
-// 	}
-
-// 	&::after {
-// 		top: 100%;
-// 		height: $sudoku-grid-gap-thickness;
-// 		left: (100% - $length) / 2;
-// 		right: (100% - $length) / 2;
-// 	}
-
-// 	&.border-right {
-// 		// border-right-width: 3px;
-// 	}
-
-// 	&.border-bottom {
-// 		// border-bottom-width: 3px;
-// 	}
-
-// 	&.original {
-// 		cursor: default;
-// 		font-weight: bold;
-// 	}
-
-// 	&.active {
-// 		background: var(--highlight);
-// 		color: white;
-// 	}
-
-// 	&.invalid:not(.active) {
-// 		background: firebrick;
-// 		color: white;
-// 	}
 }
 
 .btn {
