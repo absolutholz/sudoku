@@ -18,7 +18,11 @@
 		>
 			{{ value }}
 		</button>
-		<notes v-if="hasNotes" :notes="notes" />
+		<notes
+			:activeDigit="activeDigit"
+			:notes="notes"
+			v-if="hasNotes"
+		/>
 	</div>
 </template>
 
@@ -78,6 +82,11 @@ export default {
 		notes: {
 			required: false,
 			type: Array,
+		},
+		activeDigit: {
+			default: -1,
+			required: false,
+			type: Number,
 		},
 	},
 

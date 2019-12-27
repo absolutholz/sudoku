@@ -5,6 +5,7 @@
 		>
 			<span
 				class="note"
+				:class="activeDigit === value + 1 ? 'note--active' : ''"
 				v-if="notes[value]"
 			>{{ value + 1 }}</span>
 		</li>
@@ -22,6 +23,11 @@ export default {
 			},
 			required: false,
 			type: Array,
+		},
+		activeDigit: {
+			default: -1,
+			required: false,
+			type: Number,
 		},
 	},
 };
@@ -67,6 +73,10 @@ export default {
 .note {
     align-items: center;
     display: flex;
-    justify-content: center;
+	justify-content: center;
+
+	&--active {
+		font-weight: bold;
+	}
 }
 </style>

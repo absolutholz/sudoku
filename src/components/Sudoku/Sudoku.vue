@@ -9,8 +9,8 @@
 					<li
 						v-for="(cell, cellIndex) in subgrid" :key="`cell-${ cellIndex }`">
 						<cell
-							@active="setCellActive"
 							:activeDigit="activeValue"
+							@active="setCellActive"
 							:isActive="activeRow === cell.row && activeCol === cell.col"
 							:isInvalid="$store.state.displayErrors && (cell.value && isCellInvalid(cell.row, cell.col, cell.value))"
 							:isOriginal="cell.original"
@@ -184,6 +184,7 @@ export default {
 				row: this.activeRow,
 				col: this.activeCol,
 			});
+			this.activeValue = -1;
 		},
 
 		isCellInvalid(row, col, value) {
