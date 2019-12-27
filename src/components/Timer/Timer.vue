@@ -21,10 +21,20 @@ export default {
 
 	computed: {
 		formattedTime() {
-			const min = Math.floor(this.seconds / 60);
 			const sec = this.seconds % 60;
+			const min = Math.floor(this.seconds / 60);
+			const hour = Math.floor(min / 60);
 
-			return `${min > 9 ? min : `0${min}`}:${sec > 9 ? sec : `0${sec}`}`;
+			let time = `${ sec }s`;
+			if (min > 0 || hour > 0) {
+				time = `${ min % 60 }m, ${ time }`;
+			}
+			if (hour > 0) {
+				time = `${ hour }h, ${ time }`;
+			}
+
+			return time;
+			// return `${min > 9 ? min : `0${min}`}:${sec > 9 ? sec : `0${sec}`}`;
 		},
 	},
 
