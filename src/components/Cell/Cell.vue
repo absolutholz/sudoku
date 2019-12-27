@@ -4,10 +4,10 @@
 		class="cell"
 		:class="{
 			'cell--active': isActive,
-			'cell--related': isRelated,
+			'cell--peer-cell': isPeerCell,
 			'cell--original': isOriginal,
 			'cell--invalid': isInvalid,
-			'cell--peer': isPeer,
+			'cell--peer-digit': isPeerDigit,
 		}"
 		:id="`cell-${subgrid}x${row}x${col}`"
 	>
@@ -43,7 +43,7 @@ export default {
 			required: false,
 			type: Boolean,
 		},
-		isRelated: {
+		isPeerCell: {
 			default: false,
 			required: false,
 			type: Boolean,
@@ -53,7 +53,7 @@ export default {
 			required: false,
 			type: Boolean,
 		},
-		isPeer: {
+		isPeerDigit: {
 			default: false,
 			required: false,
 			type: Boolean,
@@ -138,17 +138,17 @@ export default {
 		font-size: 0.8em;
 	}
 
-	&--related,
-	&--peer {
+	&--peer-cell,
+	&--peer-digit {
 		--cell-bg-lum: var(--highlight-lum);
 	}
 
-	&--related {
+	&--peer-cell {
 		--cell-bg-alpha: 0.2;
 	}
 
-	&--peer {
-		--alpha: 0.5;
+	&--peer-digit {
+		--cell-bg-alpha: 0.5;
 	}
 
 	&--invalid {
