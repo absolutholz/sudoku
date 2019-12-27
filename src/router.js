@@ -28,7 +28,6 @@ const router = new Router({
 			name: 'game',
 			component: Game,
 			beforeEnter: (to, from, next) => {
-				console.log(store.state);
 				if (!store.state.puzzle.length) {
 					next('/');
 				} else {

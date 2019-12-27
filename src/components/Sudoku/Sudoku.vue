@@ -1,11 +1,6 @@
 <template>
 	<div class="sudoku">
 		<div class="row">
-			<h2>Sudoku</h2>
-
-			<router-link to="/">Home</router-link>
-			<router-link to="/settings">Settings</router-link>
-
 			<timer
 				:seconds="$store.state.seconds"
 				@pause="pausePuzzle"

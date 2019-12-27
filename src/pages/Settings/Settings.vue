@@ -2,6 +2,11 @@
 	<div class="l-page-container">
 		<h1>Settings</h1>
 
+		<nav>
+			<router-link to="/">Back to Home</router-link>
+			<router-link to="/game" v-if="$store.state.puzzle.length">Back to Game</router-link>
+		</nav>
+
 		<form @submit.prevent="handleSubmit">
 			<label
 				class="input-group"
