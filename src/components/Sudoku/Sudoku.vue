@@ -6,7 +6,10 @@
 			<router-link to="/">Home</router-link>
 			<router-link to="/settings">Settings</router-link>
 
-			<timer :seconds="$store.state.seconds" @pause="pausePuzzle" />
+			<timer
+				:seconds="$store.state.seconds"
+				@pause="pausePuzzle"
+			/>
 		</div>
 
 		<ol class="sudoku-grid">
@@ -20,10 +23,10 @@
 						<cell
 							@active="setCellActive"
 							:isActive="activeRow === cell.row && activeCol === cell.col"
-							:isInvalid="cell.value && isCellInvalid(cell.row, cell.col, cell.value)"
+							:isInvalid="$store.state.displayErrors && (cell.value && isCellInvalid(cell.row, cell.col, cell.value))"
 							:isOriginal="cell.original"
-							:isPeerCell="activeRow === cell.row || activeCol === cell.col || activeSubgrid === cell.subgrid"
-							:isPeerDigit="activeValue !== -1 && activeValue === cell.value"
+							:isPeerCell="$store.state.displayPeerCells && (activeRow === cell.row || activeCol === cell.col || activeSubgrid === cell.subgrid)"
+							:isPeerDigit="$store.state.displayPeerDigits && (activeValue !== -1 && activeValue === cell.value)"
 							:row="cell.row"
 							:col="cell.col"
 							:subgrid="cell.subgrid"

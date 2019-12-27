@@ -12,9 +12,24 @@ const store = new Vuex.Store({
 	state: {
 		puzzle: [],
 		seconds: 0,
+		displayPeerCells: true,
+		displayPeerDigits: true,
+		displayErrors: true,
 	},
 
 	mutations: {
+		setDisplayPeerCells (state, { desiredState }) {
+			state.displayPeerCells = !!desiredState;
+		},
+
+		setDisplayPeerDigits (state, { desiredState }) {
+			state.displayPeerDigits = !!desiredState;
+		},
+
+		setDisplayErrors (state, { desiredState }) {
+			state.displayErrors = !!desiredState;
+		},
+
 		increment (state, payload) {
 			state.seconds += payload.amount;
 		},
