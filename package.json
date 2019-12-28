@@ -19,6 +19,7 @@
     "vuex-persist": "^2.2.0"
   },
   "devDependencies": {
+    "@mdi/svg": "^4.7.95",
     "@vue/cli-plugin-babel": "^4.1.0",
     "@vue/cli-plugin-eslint": "^4.1.0",
     "@vue/cli-plugin-pwa": "^4.1.0",
@@ -35,6 +36,7 @@
     "sass-loader": "^8.0.0",
     "scss-mixins-functions-variables": "github:absolutholz/scss-mixins-functions-variables",
     "semantic-reboot": "github:absolutholz/semantic-reboot",
+    "vue-svg-loader": "^0.15.0",
     "vue-template-compiler": "^2.6.10",
     "webpack": "^4.41.2"
   }

@@ -42,17 +42,13 @@
 			</button>
 			<button
 				@mousedown.prevent="clearCell"
-			>
-				X
-			</button>
+			><svg-eraser class="icon" /></button>
 		</div>
 
 		<div class="row">
 			<button
 				@mousedown.prevent="toggleNotesMode"
-			>
-				notes
-			</button>
+			><svg-pencil class="icon" /></button>
 		</div>
 	</div>
 </template>
@@ -60,11 +56,16 @@
 <script>
 import Cell from './../../components/Cell';
 
+import SvgEraser from '@mdi/svg/svg/eraser.svg';
+import SvgPencil from '@mdi/svg/svg/pencil.svg';
+
 export default {
 	name: 'Sudoku',
 
 	components: {
 		Cell,
+		SvgEraser,
+		SvgPencil,
 	},
 
 	data() {

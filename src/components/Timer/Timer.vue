@@ -3,13 +3,20 @@
 		<span>{{ formattedTime }}</span>
 		<button
 			@click="pause"
-		>Pause</button>
+		><svg-pause class="icon" /></button>
 	</div>
 </template>
 
 <script>
+import SvgPause from '@mdi/svg/svg/pause.svg';
+
 export default {
+
 	name: 'Timer',
+
+	components: {
+		SvgPause,
+	},
 
 	props: {
 		seconds: {
