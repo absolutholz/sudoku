@@ -29,26 +29,44 @@
 			</li>
 		</ol>
 
-		<div class="row">
-			<button
-				class="btn"
-				@mousedown.prevent="isNotesMode ? setCellNote(value + 1) : setCellValue(value + 1)"
-				:disabled="activeIsOriginal || activeRow === -1 || activeCol === -1"
-				type="button"
-				v-for="value in Array(9).keys()"
-				:key="`entry-${value}`"
-			>
-				{{ value + 1 }}
-			</button>
-			<button
-				@mousedown.prevent="clearCell"
-			><svg-eraser class="icon" /></button>
-		</div>
+		<div class="sudoku-controls">
+			<div class="sudoku-controls__section--cell-controls">
+				<ol class="btn-grid">
+					<li
+						v-for="value in Array(9).keys()"
+						:key="`entry-${value}`"
+					>
+						<button
+							class="btn btn--digit"
+							:disabled="isActiveCellLocked"
+							@mousedown.prevent="isNotesMode ? setCellNote(value + 1) : setCellValue(value + 1)"
+							type="button"
+						>
+							{{ value + 1 }}
+						</button>
+					</li>
+					<li>
+						<button
+							class="btn btn--digit btn--icon-text"
+							:disabled="isActiveCellLocked"
+							@mousedown.prevent="clearCell"
+							type="button"
+						>
+							<svg-eraser class="icon" />
+							<span>Erase</span>
+						</button>
+					</li>
+				</ol>
+			</div>
 
-		<div class="row">
-			<button
-				@mousedown.prevent="toggleNotesMode"
-			><svg-pencil class="icon" /></button>
+			<div class="sudoku-controls__section--board-controls">
+				<button
+					@mousedown.prevent="toggleNotesMode"
+				>
+					<svg-pencil class="icon" />
+					<span>Notes</span>
+				</button>
+			</div>
 		</div>
 	</div>
 </template>
@@ -117,6 +135,10 @@ export default {
 			});
 			return subgrids;
 		},
+
+		isActiveCellLocked () {
+			return !!(this.activeIsOriginal || this.activeRow === -1 || this.activeCol === -1);
+		},
 	},
 
 	methods: {
@@ -125,10 +147,6 @@ export default {
 		},
 
 		setCellActive(row, col, subgrid, value, original) {
-			// if (original) {
-			// 	return;
-			// }
-
 			if (this.activeRow === row && this.activeCol === col) {
 				this.activeRow = -1;
 				this.activeSubgrid = -1;
@@ -147,6 +165,10 @@ export default {
 		},
 
 		setCellValue(value) {
+			if (this.isActiveCellLocked) {
+				return;
+			}
+
 			this.$store.commit('clearCellNotes', {
 				row: this.activeRow,
 				col: this.activeCol,
@@ -160,6 +182,10 @@ export default {
 		},
 
 		setCellNote(value) {
+			if (this.isActiveCellLocked) {
+				return;
+			}
+
 			if (!this.original) {
 				if (this.$store.state.puzzle[this.activeRow][this.activeCol].value > 0) {
 					this.$store.commit('clearCellValue', {
@@ -177,6 +203,10 @@ export default {
 		},
 
 		clearCell() {
+			if (this.isActiveCellLocked) {
+				return;
+			}
+
 			this.$store.commit('clearCellValue', {
 				row: this.activeRow,
 				col: this.activeCol,
@@ -243,6 +273,25 @@ export default {
 <style lang="scss">
 @import "~scss-mixins-functions-variables/scss/reset/list/reset-list-mixins";
 
+.sudoku-controls {
+	&__section {
+		display: flex;
+		justify-content: center;
+		margin-bottom: 1rem;
+		margin-top: 1rem;
+
+		&--cell-controls {
+			@extend .sudoku-controls__section;
+
+		}
+
+		&--board-controls {
+			@extend .sudoku-controls__section;
+
+		}
+	}
+}
+
 .sudoku-grid {
 	--bg: #fffffe;
 	--type: #111;
@@ -297,12 +346,41 @@ export default {
 }
 
 .btn {
+	align-items: center;
+	background: none;
+	border: 0;
+	color: inherit;
 	cursor: pointer;
-	height: 38px;
-	width: 38px;
+	display: inline-flex;
+	justify-content: center;
 
 	&:disabled {
 		cursor: not-allowed;
+		opacity: 0.5;
 	}
+
+	&--digit {
+		font-size: 2rem;
+		min-height: 1.5em;
+		min-width: 1.5em;
+	}
+
+	&--icon-text {
+		flex-direction: column;
+		font-size: 0.875rem;
+
+		.icon {
+			font-size: 1.5rem;
+		}
+	}
+}
+
+.btn-grid {
+	@include reset-list;
+
+	display: inline-grid;
+	grid-gap: 1rem;
+	grid-template-columns: repeat(5, auto);
+	align-items: center;
 }
 </style>

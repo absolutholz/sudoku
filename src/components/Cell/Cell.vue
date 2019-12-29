@@ -135,6 +135,7 @@ export default {
 		background: none;
 		border: 0;
 		color: inherit;
+		font: inherit;
 		height: 100%;
 		left: 0;
 		padding: 0;

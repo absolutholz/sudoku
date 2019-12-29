@@ -28,7 +28,6 @@ export default {
 .icon {
 	color: inherit;
 	fill: currentColor;
-	font-size: 1.5em;
 	height: 1em;
 	width: 1em;
 }
