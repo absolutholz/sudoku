@@ -109,6 +109,8 @@ export default {
 </script>
 
 <style lang="scss">
+@import "~scss-mixins-functions-variables/scss/typography/font-weight-variables";
+
 .cell {
 	--cell-bg-hue: var(--highlight-hue);
 	--cell-bg-sat: var(--highlight-sat);
@@ -118,7 +120,8 @@ export default {
 	// https://github.com/sass/sass/issues/469
 	background: unquote("hsl(var(--cell-bg-hue), var(--cell-bg-sat), var(--cell-bg-lum), var(--cell-bg-alpha))");
 	// color: unquote("hsl(var(--highlight-hue), var(--highlight-sat), var(--highlight-lum))");
-	font-family: 'Rubik', sans-serif;
+	font-family: Rubik, sans-serif;
+	font-weight: $typography-weight-light;
 	height: 100%;
 	line-height: 1;
 	left: 0;
@@ -145,6 +148,7 @@ export default {
 		--cell-bg-lum: 0%;
 		color: var(--typo);
 		font-size: 0.8em;
+		font-weight: $typography-weight-medium;
 	}
 
 	&--peer-cell,
