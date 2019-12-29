@@ -60,22 +60,29 @@
 			</div>
 
 			<div class="sudoku-controls__section--board-controls">
-				<button
+				<label
+					class="btn btn--with-switch"
+					for="note-switch-button"
 					@mousedown.prevent="toggleNotesMode"
 				>
-					<svg-pencil class="icon" />
+					<switch-button
+						id="note-switch-button"
+						:state="isNotesMode"
+					/>
+					<!-- <svg-pencil class="icon" /> -->
 					<span>Notes</span>
-				</button>
+				</label>
 			</div>
 		</div>
 	</div>
 </template>
 
 <script>
-import Cell from './../../components/Cell';
+import Cell from './../Cell';
+import SwitchButton from './../SwitchButton';
 
 import SvgEraser from '@mdi/svg/svg/eraser.svg';
-import SvgPencil from '@mdi/svg/svg/pencil.svg';
+// import SvgPencil from '@mdi/svg/svg/pencil.svg';
 
 export default {
 	name: 'Sudoku',
@@ -83,7 +90,8 @@ export default {
 	components: {
 		Cell,
 		SvgEraser,
-		SvgPencil,
+		// SvgPencil,
+		SwitchButton,
 	},
 
 	data() {
@@ -371,6 +379,14 @@ export default {
 
 		.icon {
 			font-size: 1.5rem;
+		}
+	}
+
+	&--with-switch {
+		flex-direction: column;
+
+		[role="switch"] {
+			font-size: 0.75em;
 		}
 	}
 }
