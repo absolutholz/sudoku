@@ -1,33 +1,45 @@
 <template>
-	<div class="sudoku">
-		<ol class="sudoku-grid">
-			<li
-				:aria-label="`Subgrid ${ subgridIndex + 1 }`"
-				v-for="(subgrid, subgridIndex) in subgrids" :key="`subgrid-${ subgridIndex }`"
+	<div>
+
+		<div class="sudoku-gameboard">
+
+			<div
+				class="sudoku-overlay"
+				@click="resumeGame"
+				v-if="$store.state.isPaused"
 			>
-				<ol class="sudoku-subgrid">
-					<li
-						v-for="(cell, cellIndex) in subgrid" :key="`cell-${ cellIndex }`">
-						<cell
-							:activeDigit="activeValue"
-							@active="setCellActive"
-							:isActive="activeRow === cell.row && activeCol === cell.col"
-							:isInvalid="$store.state.displayErrors && (cell.value && isCellInvalid(cell.row, cell.col, cell.value))"
-							:isOriginal="cell.original"
-							:isPeerCell="$store.state.displayPeerCells && (activeRow === cell.row || activeCol === cell.col || activeSubgrid === cell.subgrid)"
-							:isPeerDigit="$store.state.displayPeerDigits && (activeValue !== -1 && activeValue === cell.value)"
-							:row="cell.row"
-							:col="cell.col"
-							:subgrid="cell.subgrid"
-							:value="cell.value"
-							:notes="cell.notes"
-						>
-							<template>{{ cell.value }}</template>
-						</cell>
-					</li>
-				</ol>
-			</li>
-		</ol>
+				<svg-pause class="icon" />
+			</div>
+
+			<ol class="sudoku-grid">
+				<li
+					:aria-label="`Subgrid ${ subgridIndex + 1 }`"
+					v-for="(subgrid, subgridIndex) in subgrids" :key="`subgrid-${ subgridIndex }`"
+				>
+					<ol class="sudoku-subgrid">
+						<li
+							v-for="(cell, cellIndex) in subgrid" :key="`cell-${ cellIndex }`">
+							<cell
+								:activeDigit="activeValue"
+								@active="setCellActive"
+								:isActive="activeRow === cell.row && activeCol === cell.col"
+								:isInvalid="$store.state.displayErrors && (cell.value && isCellInvalid(cell.row, cell.col, cell.value))"
+								:isOriginal="cell.original"
+								:isPeerCell="$store.state.displayPeerCells && (activeRow === cell.row || activeCol === cell.col || activeSubgrid === cell.subgrid)"
+								:isPeerDigit="$store.state.displayPeerDigits && (activeValue !== -1 && activeValue === cell.value)"
+								:row="cell.row"
+								:col="cell.col"
+								:subgrid="cell.subgrid"
+								:value="cell.value"
+								:notes="cell.notes"
+							>
+								<template>{{ cell.value }}</template>
+							</cell>
+						</li>
+					</ol>
+				</li>
+			</ol>
+		</div>
 
 		<div class="sudoku-controls">
 			<div class="sudoku-controls__section--cell-controls">
@@ -83,6 +95,7 @@ import SwitchButton from './../SwitchButton';
 
 import SvgEraser from '@mdi/svg/svg/eraser.svg';
 // import SvgPencil from '@mdi/svg/svg/pencil.svg';
+import SvgPause from '@mdi/svg/svg/pause.svg';
 
 export default {
 	name: 'Sudoku',
@@ -92,6 +105,7 @@ export default {
 		SvgEraser,
 		// SvgPencil,
 		SwitchButton,
+		SvgPause,
 	},
 
 	data() {
@@ -150,6 +164,10 @@ export default {
 	},
 
 	methods: {
+		resumeGame () {
+			this.$store.dispatch('resumeGame');
+		},
+
 		toggleNotesMode() {
 			this.isNotesMode = !this.isNotesMode;
 		},
@@ -273,13 +291,45 @@ export default {
 	},
 
 	mounted() {
-		this.$store.dispatch('startTimer');
+		// this.$store.dispatch('startTimer');
 	},
 };
 </script>
 
 <style lang="scss">
 @import "~scss-mixins-functions-variables/scss/reset/list/reset-list-mixins";
+
+.sudoku-gameboard {
+	position: relative;
+}
+
+.sudoku-overlay {
+	align-items: center;
+	bottom: 0;
+	display: flex;
+	justify-content: center;
+	left: 0;
+	position: absolute;
+	right: 0;
+	top: 0;
+	z-index: 1;
+
+	&::before {
+		background: white;
+		bottom: 0;
+		content: "";
+		left: 0;
+		opacity: 0.9;
+		position: absolute;
+		right: 0;
+		top: 0;
+	}
+
+	.icon {
+		font-size: 6rem;
+		z-index: 1;
+	}
+}
 
 .sudoku-controls {
 	&__section {
@@ -361,6 +411,7 @@ export default {
 	cursor: pointer;
 	display: inline-flex;
 	justify-content: center;
+	padding: 0;
 
 	&:disabled {
 		cursor: not-allowed;

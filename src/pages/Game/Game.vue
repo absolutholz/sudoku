@@ -7,9 +7,11 @@
 			<router-link to="/settings">Settings</router-link>
 		</nav>
 
+		<!-- <div>{{ $store.state.difficulty }}</div> -->
+
 		<timer
 			:seconds="$store.state.seconds"
-			@pause="pausePuzzle"
+			@pause="pauseGame"
 		/>
 
 		<sudoku />
@@ -29,13 +31,13 @@ export default {
 	},
 
 	beforeRouteLeave (to, from, next) {
-		this.$store.dispatch('pauseTimer');
+		this.$store.dispatch('pauseGame');
 		next();
 	},
 
 	methods: {
-		pausePuzzle() {
-			this.$store.dispatch('pauseTimer');
+		pauseGame() {
+			this.$store.dispatch('pauseGame');
 		},
 	},
 };

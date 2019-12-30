@@ -1,10 +1,15 @@
 <template>
-	<div>
-		<span>{{ formattedTime }}</span>
+	<label
+		class="timer"
+		for="game-timer"
+	>
+		<span class="timer__time">{{ formattedTime }}</span>
 		<button
+			class="btn timer__btn"
 			@click="pause"
+			id="game-timer"
 		><svg-pause class="icon" /></button>
-	</div>
+	</label>
 </template>
 
 <script>
@@ -54,5 +59,18 @@ export default {
 </script>
 
 <style lang="scss">
+.timer {
+	display: flex;
+	align-items: center;
 
+	&__time {
+
+	}
+
+	&__btn {
+		font-size: 1.5em;
+		margin: -0.5em -0.25em;
+		padding: 0.5em;
+	}
+}
 </style>

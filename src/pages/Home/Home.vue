@@ -44,7 +44,7 @@ export default {
 
 	methods: {
 		startNewGame (difficulty) {
-			this.$store.commit('generatePuzzle', { difficulty });
+			this.$store.dispatch('startGame', { difficulty });
 
 			this.$router.push({
 				name: 'game',
