@@ -59,7 +59,7 @@
 					</li>
 					<li>
 						<button
-							class="btn btn--digit btn--icon-text"
+							class="btn btn--icon-text"
 							:disabled="isActiveCellLocked"
 							@mousedown.prevent="clearCell"
 							type="button"
@@ -423,7 +423,7 @@ export default {
 	}
 
 	&--digit {
-		font-size: 2rem;
+		font: 2rem / 1 "Rubik", sans-serif;
 		min-height: 1.5em;
 		min-width: 1.5em;
 	}
