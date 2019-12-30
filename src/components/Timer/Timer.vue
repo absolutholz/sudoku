@@ -16,7 +16,6 @@
 import SvgPause from '@mdi/svg/svg/pause.svg';
 
 export default {
-
 	name: 'Timer',
 
 	components: {
@@ -55,6 +54,14 @@ export default {
 			this.$emit('pause');
 		},
 	},
+
+	mounted () {
+		setInterval(() => {
+			if (!this.$store.state.isPaused && !this.$store.state.isComplete) {
+				this.$store.commit('incrementTimer');
+			}
+		}, 1000);
+	}
 };
 </script>
 

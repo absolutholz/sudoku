@@ -4,6 +4,8 @@
 
 		<nav>
 			<router-link to="/">Home</router-link>
+			<span>New Game</span>
+			<button @click="restartGame">Restart</button>
 			<router-link to="/settings">Settings</router-link>
 		</nav>
 
@@ -38,6 +40,25 @@ export default {
 	methods: {
 		pauseGame() {
 			this.$store.dispatch('pauseGame');
+		},
+
+		restartGame() {
+			this.$store.state.puzzle.forEach(row => {
+				row.forEach(cell => {
+					if (!cell.original) {
+						this.$store.commit('clearCellNotes', {
+							row: cell.row,
+							col: cell.col,
+						});
+
+						this.$store.commit('clearCellValue', {
+							row: cell.row,
+							col: cell.col,
+						});
+					}
+				});
+			});
+			this.$store.dispatch('startGame');
 		},
 	},
 };

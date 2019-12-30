@@ -205,6 +205,11 @@ export default {
 				value,
 			});
 			this.activeValue = value || -1;
+
+			if (this.isGameComplete) {
+				this.$store.commit('setCompletedState', { isComplete: true });
+				this.$store.dispatch('stopGame');
+			}
 		},
 
 		setCellNote(value) {

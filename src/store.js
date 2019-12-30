@@ -6,12 +6,6 @@ import { sudoku } from 'sudoku.js/sudoku.js';
 
 Vue.use(Vuex);
 
-let timer = null;
-const stopTimer = function stopTimingIntervalAndSetToNull () {
-	clearInterval(timer);
-	timer = null;
-};
-
 const store = new Vuex.Store({
 	state: {
 		difficulty: 'easy',
@@ -21,24 +15,25 @@ const store = new Vuex.Store({
 		displayPeerDigits: true,
 		displayErrors: true,
 		isPaused: true,
+		isComplete: false,
 	},
 
 	mutations: {
 		// Settings
-		setDisplayPeerCells (state, { desiredState }) {
+		setDisplayPeerCells (state, { desiredState = true } = {}) {
 			state.displayPeerCells = !!desiredState;
 		},
 
-		setDisplayPeerDigits (state, { desiredState }) {
+		setDisplayPeerDigits (state, { desiredState = true} = {}) {
 			state.displayPeerDigits = !!desiredState;
 		},
 
-		setDisplayErrors (state, { desiredState }) {
+		setDisplayErrors (state, { desiredState = true } = {}) {
 			state.displayErrors = !!desiredState;
 		},
 
 		// Timer
-		incrementTimer (state, { amount }) {
+		incrementTimer (state, { amount = 1 } = {}) {
 			state.seconds += amount;
 		},
 
@@ -66,6 +61,7 @@ const store = new Vuex.Store({
 
 		// Puzzle
 		generatePuzzle (state, { difficulty }) {
+			state.difficulty = difficulty;
 			const boardString = sudoku.generate(difficulty);
 			state.puzzle = sudoku.board_string_to_grid(boardString).map((row, rowIndex) => {
 				return row.map((cell, colIndex) => {
@@ -85,43 +81,32 @@ const store = new Vuex.Store({
 				});
 			});
 		},
+
+		setPausedState (state, { isPaused = true } = {}) {
+			state.isPaused = isPaused;
+		},
+
+		setCompletedState (state, { isComplete = true } = {}) {
+			state.isComplete = isComplete;
+		},
 	},
 
 	actions: {
-		startGame ({ state, commit }, { difficulty }) {
+		startGame ({ commit }) {
 			commit('resetTimer');
-
-			commit('difficulty', { difficulty });
-			commit('generatePuzzle', { difficulty });
-
-			timer = setInterval(() => {
-				if (!state.isPaused) {
-					commit('incrementTimer', {
-						amount: 1,
-					});
-				}
-			}, 1000);
-			state.isPaused = false;
+			commit('setPausedState', { isPaused: false });
 		},
 
-		stopGame () {
-			stopTimer();
+		stopGame ({ commit }) {
+			commit('setPausedState', { isPaused: true });
 		},
 
-		pauseGame ({ state }) {
-			state.isPaused = true;
-			stopTimer();
+		pauseGame ({ commit }) {
+			commit('setPausedState', { isPaused: true });
 		},
 
-		resumeGame ({ commit, state }) {
-			timer = setInterval(() => {
-				if (!state.isPaused) {
-					commit('incrementTimer', {
-						amount: 1,
-					});
-				}
-			}, 1000);
-			state.isPaused = false;
+		resumeGame ({ commit }) {
+			commit('setPausedState', { isPaused: false });
 		},
 	},
 
