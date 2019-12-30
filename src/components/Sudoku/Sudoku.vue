@@ -411,7 +411,6 @@ export default {
 	cursor: pointer;
 	display: inline-flex;
 	justify-content: center;
-	padding: 0;
 
 	&:disabled {
 		cursor: not-allowed;
@@ -448,6 +447,11 @@ export default {
 	display: inline-grid;
 	grid-gap: 1rem;
 	grid-template-columns: repeat(5, auto);
-	align-items: center;
+
+	> li {
+		align-items: center;
+		display: flex;
+		justify-content: center;
+	}
 }
 </style>
