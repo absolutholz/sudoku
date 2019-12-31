@@ -67,7 +67,7 @@ export default {
 
 <style lang="scss">
 .timer {
-	display: flex;
+	display: inline-flex;
 	align-items: center;
 
 	&__time {
