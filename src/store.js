@@ -80,6 +80,7 @@ const store = new Vuex.Store({
 					return oCell;
 				});
 			});
+			this.isComplete = false;
 		},
 
 		setPausedState (state, { isPaused = true } = {}) {
@@ -112,5 +113,11 @@ const store = new Vuex.Store({
 
 	plugins: [new VuexPersistence().plugin],
 });
+
+setInterval(() => {
+	if (!store.state.isPaused && !store.state.isComplete) {
+		store.commit('incrementTimer');
+	}
+}, 1000);
 
 export default store;

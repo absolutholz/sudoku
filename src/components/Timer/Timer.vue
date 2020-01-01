@@ -24,7 +24,9 @@ export default {
 
 	props: {
 		seconds: {
-			default: 0,
+			default: () => {
+				return this.$store.state.seconds;
+			},
 			required: false,
 			type: Number,
 		},
@@ -54,14 +56,6 @@ export default {
 			this.$emit('pause');
 		},
 	},
-
-	mounted () {
-		setInterval(() => {
-			if (!this.$store.state.isPaused && !this.$store.state.isComplete) {
-				this.$store.commit('incrementTimer');
-			}
-		}, 1000);
-	}
 };
 </script>
 
