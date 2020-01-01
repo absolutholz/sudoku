@@ -21,6 +21,9 @@ export default {
 @include font-face ("Rubik", "/fonts/Rubik/subset/rubik-light-webfont", $typography-weight-light, $exts: woff2);
 // @include font-face ("Rubik", "/fonts/Rubik/subset/rubik-medium-webfont", $typography-weight-medium, $exts: woff2);
 
+$root-background-color: var(--bg);
+$root-typography-color: var(--typo);
+
 @import "~semantic-reboot/src/reboot";
 @import "./scss/theme-base";
 @import "./scss/layout";

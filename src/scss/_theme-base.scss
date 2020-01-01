@@ -89,8 +89,8 @@ $rgba-complement-4: rgba(255, 14, 14,1);
 // http://paletton.com */
 
 :root {
-	--bg: $rgba-white-0;
-	--typo: $rgba-black-0;
+	--bg: #{$rgba-white-0};
+	--typo: #{$rgba-black-0};
 
 	$invalid: $rgba-complement-0;
 	$invalid: rgb2HslList(red($invalid), green($invalid), blue(($invalid)));

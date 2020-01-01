@@ -1,6 +1,5 @@
 <template>
 	<div>
-
 		<div class="sudoku-gameboard">
 
 			<div
@@ -94,7 +93,6 @@ import Cell from './../Cell';
 import SwitchButton from './../SwitchButton';
 
 import SvgEraser from '@mdi/svg/svg/eraser.svg';
-// import SvgPencil from '@mdi/svg/svg/pencil.svg';
 import SvgPause from '@mdi/svg/svg/pause.svg';
 
 export default {
@@ -103,7 +101,6 @@ export default {
 	components: {
 		Cell,
 		SvgEraser,
-		// SvgPencil,
 		SwitchButton,
 		SvgPause,
 	},
@@ -320,7 +317,7 @@ export default {
 	z-index: 1;
 
 	&::before {
-		background: white;
+		background: var(--bg);
 		bottom: 0;
 		content: "";
 		left: 0;
@@ -356,10 +353,6 @@ export default {
 }
 
 .sudoku-grid {
-	--bg: #fffffe;
-	--type: #111;
-	--highlight: lightskyblue;
-
 	@include reset-list;
 
 	display: grid;
@@ -369,7 +362,7 @@ export default {
 	z-index: 0;
 
 	&::before {
-		background: var(--type);
+		background: var(--typo);
 		bottom: 0;
 		content: "";
 		left: 0;
@@ -391,7 +384,7 @@ export default {
 	position: relative;
 
 	&::before {
-		background: var(--type);
+		background: var(--typo);
 		bottom: 0;
 		content: "";
 		left: 0;
@@ -416,6 +409,7 @@ export default {
 	cursor: pointer;
 	display: inline-flex;
 	justify-content: center;
+	text-decoration: none;
 
 	&:disabled {
 		cursor: not-allowed;
