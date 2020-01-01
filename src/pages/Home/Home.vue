@@ -1,44 +1,54 @@
 <template>
-	<div class="l-page-container">
+	<main class="l-page-container page--home">
 		<h1>Sudoku</h1>
 
-		<div v-if="$store.state.puzzle.length">
-			<button
-				@click="resumeGame()"
-			>Resume game</button>
-		</div>
-
-		<div>
-			Start a new game
-			<div v-for="(display, level) in levels" :key="`difficulty-level-${ level }`">
+		<section
+			class="page-section"
+			v-if="$store.state.puzzle.length"
+		>
+			<h2 class="page-section__hdln">Current game</h2>
+			<div>
 				<button
-					@click="startNewGame(level)"
-				>{{ display }}</button>
+					class="page-section__btn"
+					@click="resumeGame()"
+				>Resume</button>
 			</div>
-		</div>
+		</section>
 
-		<div>
-			<router-link to="/settings">Settings</router-link>
-		</div>
+		<section class="page-section">
+			<h2 class="page-section__hdln">New game</h2>
+			<ol class="levels-list">
+				<li v-for="(display, level) in levels" :key="`difficulty-level-${ level }`">
+					<button
+						class="page-section__btn"
+						@click="startNewGame(level)"
+					>{{ display }}</button>
+				</li>
+			</ol>
+		</section>
 
-	</div>
+		<section class="page-section">
+			<h2 class="page-section__hdln">Gameplay Settings</h2>
+			<div>
+				<router-link
+					class="page-section__btn"
+					to="/settings">Settings</router-link>
+			</div>
+		</section>
+
+	</main>
 </template>
 
 <script>
+import levels from './../../difficulty-levels';
+
 export default {
 	name: 'HomePage',
 
 	data() {
 		return {
 			difficulty: false,
-			levels: {
-				'easy': 'Easy',
-				'medium': 'Medium',
-				'hard': 'Hard',
-				'very-hard': 'Very Hard',
-				'insane': 'Insane',
-				'inhuman': 'Inhuman',
-			},
+			levels,
 		};
 	},
 
@@ -59,3 +69,41 @@ export default {
 	},
 };
 </script>
+
+<style lang="scss">
+@import "~scss-mixins-functions-variables/scss/reset/list/reset-list-mixins";
+
+.page--home {
+	text-align: center;
+}
+
+.page-section {
+	margin: 3rem 0;
+
+	&__hdln {
+		text-transform: capitalize;
+	}
+
+	&__btn {
+		background: var(--highlight);
+		border: 0;
+		border-radius: 6px;
+		color: var(--bg);
+		display: block;
+		font-size: 1.5rem;
+		margin: auto;
+		max-width: 20ch;
+		padding: 0.25em 1em;
+		text-decoration: none;
+		width: 100%;
+	}
+}
+
+.levels-list {
+	@include reset-list;
+
+	display: inline-grid;
+	grid-gap: 1rem;
+	grid-template-columns: repeat(2, 1fr);
+}
+</style>

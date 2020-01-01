@@ -93,12 +93,14 @@ $rgba-complement-4: rgba(255, 14, 14,1);
 	--typo: #{$rgba-black-0};
 
 	$invalid: $rgba-complement-0;
+	--invalid: #{$invalid};
 	$invalid: rgb2HslList(red($invalid), green($invalid), blue(($invalid)));
 	--invalid-hue: #{nth($invalid, 1)};
 	--invalid-sat: #{nth($invalid, 2)};
 	--invalid-lum: #{nth($invalid, 3)};
 
 	$highlight: $rgba-secondary-1-0;
+	--highlight: #{$highlight};
 	$highlight: rgb2HslList(red($highlight), green($highlight), blue($highlight));
 	--highlight-hue: #{nth($highlight, 1)};
 	--highlight-sat: #{nth($highlight, 2)};
