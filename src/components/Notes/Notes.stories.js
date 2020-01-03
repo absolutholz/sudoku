@@ -11,11 +11,11 @@ export const basic = () => ({
 	components: { Notes },
 	props: {
 		notes: {
-			default: array('Notes', [false, false, false, false, false, false, false, false, false]),
+			default: array('Notes', [true, true, true, true, true, true, true, true, true]),
 		},
 		activeDigit: {
 			default: number('Active Digit', 0, { range: true, min: 0, max: 9, step: 1 }),
 		},
 	},
-	template: '<notes :notes="notes" activeDigit="activeDigit" />',
+	template: '<notes :notes="notes" :activeDigit="activeDigit" />',
 });
