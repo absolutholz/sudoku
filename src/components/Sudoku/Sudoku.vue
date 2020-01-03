@@ -317,11 +317,11 @@ export default {
 	z-index: 1;
 
 	&::before {
-		background: var(--bg);
+		backdrop-filter: blur(0.25em);
+		background: unquote("hsl(var(--bg-hue), var(--bg-sat), var(--bg-lum), 0.5)");
 		bottom: 0;
 		content: "";
 		left: 0;
-		opacity: 0.9;
 		position: absolute;
 		right: 0;
 		top: 0;
