@@ -11,7 +11,7 @@ export const basic = () => ({
 	components: { Timer },
 	props: {
 		seconds: {
-			default: number('Seconds', 0),
+			default: number('Seconds', 0, { min: 0, step: 1 }),
 		},
 	},
 	template: '<timer :seconds="seconds" />',
