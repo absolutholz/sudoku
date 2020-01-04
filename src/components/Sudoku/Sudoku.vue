@@ -47,14 +47,10 @@
 						v-for="value in Array(9).keys()"
 						:key="`entry-${value}`"
 					>
-						<button
-							class="btn btn--digit"
+						<sudoku-cell-button
 							:disabled="isActiveCellLocked"
 							@mousedown.prevent="isNotesMode ? setCellNote(value + 1) : setCellValue(value + 1)"
-							type="button"
-						>
-							{{ value + 1 }}
-						</button>
+						>{{ value + 1 }}</sudoku-cell-button>
 					</li>
 					<li>
 						<button
@@ -91,6 +87,7 @@
 <script>
 import Cell from './../Cell';
 import SwitchButton from './../SwitchButton';
+import SudokuCellButton from './../SudokuCellButton';
 
 import SvgEraser from '@mdi/svg/svg/eraser.svg';
 import SvgPause from '@mdi/svg/svg/pause.svg';
@@ -100,8 +97,9 @@ export default {
 
 	components: {
 		Cell,
-		SvgEraser,
+		SudokuCellButton,
 		SwitchButton,
+		SvgEraser,
 		SvgPause,
 	},
 
@@ -398,59 +396,6 @@ export default {
 		background: white;
 		padding-bottom: 100%;
 		position: relative;
-	}
-}
-
-.btn {
-	align-items: center;
-	background: none;
-	border: 0;
-	color: inherit;
-	cursor: pointer;
-	display: inline-flex;
-	justify-content: center;
-	text-decoration: none;
-
-	&:disabled {
-		cursor: not-allowed;
-		opacity: 0.5;
-	}
-
-	&--digit {
-		font: 2rem / 1 "Rubik", sans-serif;
-		min-height: 1.5em;
-		min-width: 1.5em;
-	}
-
-	&--icon-text {
-		flex-direction: column;
-		font-size: 0.875rem;
-
-		.icon {
-			font-size: 1.5rem;
-		}
-	}
-
-	&--with-switch {
-		flex-direction: column;
-
-		[role="switch"] {
-			font-size: 0.75em;
-		}
-	}
-}
-
-.btn-grid {
-	@include reset-list;
-
-	display: inline-grid;
-	grid-gap: 1rem;
-	grid-template-columns: repeat(5, auto);
-
-	> li {
-		align-items: center;
-		display: flex;
-		justify-content: center;
 	}
 }
 </style>
