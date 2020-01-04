@@ -9,30 +9,25 @@ export default {
 
 export const basic = () => ({
 	components: { SwitchButton },
-	template: '<switch-button />',
+	props: {
+		state: {
+			default: boolean('State', false),
+		},
+	},
+	template: '<switch-button :state="state" />',
 });
 
 export const on = () => ({
 	components: { SwitchButton },
 	props: {
 		state: {
-			default: true,
+			default: boolean('State', true),
 		},
 	},
 	template: '<switch-button :state="state" />',
 });
 
 export const off = () => ({
-	components: { SwitchButton },
-	props: {
-		state: {
-			default: false,
-		},
-	},
-	template: '<switch-button :state="state" />',
-});
-
-export const interactive = () => ({
 	components: { SwitchButton },
 	props: {
 		state: {
