@@ -1,13 +1,13 @@
 <template>
 	<button
-		class="btn btn--digit"
+		class="btn"
 		type="button"
 	><slot /></button>
 </template>
 
 <script>
 export default {
-	name: 'SudokuCellButton',
+	'name': 'Generic Button',
 };
 </script>
 
@@ -27,12 +27,6 @@ export default {
 	&:disabled {
 		cursor: not-allowed;
 		opacity: 0.5;
-	}
-
-	&--digit {
-		font: 2rem / 1 "Rubik", sans-serif;
-		min-height: 1.5em;
-		min-width: 1.5em;
 	}
 
 	&--icon-text {
