@@ -53,14 +53,10 @@
 						>{{ value + 1 }}</sudoku-digit-button>
 					</li>
 					<li>
-						<sudoku-digit-button
-							class="btn--icon-text"
+						<sudoku-icon-button
 							:disabled="isActiveCellLocked"
 							@mousedown.prevent="clearCell"
-						>
-							<svg-eraser class="icon" />
-							<span>Erase</span>
-						</sudoku-digit-button>
+						><template #icon><svg-eraser class="icon" /></template>Erase</sudoku-icon-button>
 					</li>
 				</ol>
 			</div>
@@ -75,7 +71,6 @@
 						id="note-switch-button"
 						:state="isNotesMode"
 					/>
-					<!-- <svg-pencil class="icon" /> -->
 					<span>Notes</span>
 				</label>
 			</div>
@@ -86,6 +81,7 @@
 <script>
 import SudokuCell from './../SudokuCell';
 import SudokuDigitButton from './../SudokuDigitButton';
+import SudokuIconButton from './../SudokuIconButton';
 import SwitchButton from './../SwitchButton';
 
 import SvgEraser from '@mdi/svg/svg/eraser.svg';
@@ -97,6 +93,7 @@ export default {
 	components: {
 		SudokuCell,
 		SudokuDigitButton,
+		SudokuIconButton,
 		SwitchButton,
 		SvgEraser,
 		SvgPause,

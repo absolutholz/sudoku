@@ -29,15 +29,6 @@ export default {
 		opacity: 0.5;
 	}
 
-	&--icon-text {
-		flex-direction: column;
-		font-size: 0.875rem;
-
-		.icon {
-			font-size: 1.5rem;
-		}
-	}
-
 	&--with-switch {
 		flex-direction: column;
 
