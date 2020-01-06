@@ -8,7 +8,7 @@
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint",
     "install": "napa robatron/sudoku.js",
-    "storybook": "start-storybook -p 6006",
+    "storybook": "start-storybook -p 6006 --static-dir public",
     "build-storybook": "build-storybook"
   },
   "dependencies": {
