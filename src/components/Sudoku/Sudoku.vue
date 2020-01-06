@@ -18,7 +18,7 @@
 					<ol class="sudoku-subgrid">
 						<li
 							v-for="(cell, cellIndex) in subgrid" :key="`cell-${ cellIndex }`">
-							<cell
+							<sudoku-cell
 								:activeDigit="activeValue"
 								@active="setCellActive"
 								:isActive="activeRow === cell.row && activeCol === cell.col"
@@ -29,11 +29,11 @@
 								:row="cell.row"
 								:col="cell.col"
 								:subgrid="cell.subgrid"
-								:value="cell.value"
+								:digit="cell.value"
 								:notes="cell.notes"
 							>
 								<template>{{ cell.value }}</template>
-							</cell>
+							</sudoku-cell>
 						</li>
 					</ol>
 				</li>
@@ -47,21 +47,20 @@
 						v-for="value in Array(9).keys()"
 						:key="`entry-${value}`"
 					>
-						<sudoku-cell-button
+						<sudoku-digit-button
 							:disabled="isActiveCellLocked"
 							@mousedown.prevent="isNotesMode ? setCellNote(value + 1) : setCellValue(value + 1)"
-						>{{ value + 1 }}</sudoku-cell-button>
+						>{{ value + 1 }}</sudoku-digit-button>
 					</li>
 					<li>
-						<button
-							class="btn btn--icon-text"
+						<sudoku-digit-button
+							class="btn--icon-text"
 							:disabled="isActiveCellLocked"
 							@mousedown.prevent="clearCell"
-							type="button"
 						>
 							<svg-eraser class="icon" />
 							<span>Erase</span>
-						</button>
+						</sudoku-digit-button>
 					</li>
 				</ol>
 			</div>
@@ -85,9 +84,9 @@
 </template>
 
 <script>
-import Cell from './../Cell';
+import SudokuCell from './../SudokuCell';
+import SudokuDigitButton from './../SudokuDigitButton';
 import SwitchButton from './../SwitchButton';
-import SudokuCellButton from './../SudokuCellButton';
 
 import SvgEraser from '@mdi/svg/svg/eraser.svg';
 import SvgPause from '@mdi/svg/svg/pause.svg';
@@ -96,8 +95,8 @@ export default {
 	name: 'Sudoku',
 
 	components: {
-		Cell,
-		SudokuCellButton,
+		SudokuCell,
+		SudokuDigitButton,
 		SwitchButton,
 		SvgEraser,
 		SvgPause,

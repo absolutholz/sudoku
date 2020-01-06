@@ -16,7 +16,7 @@
 			@focus="setActive"
 			:readonly="isOriginal"
 		>
-			{{ value }}
+			<slot>{{ digit }}</slot>
 		</button>
 		<notes
 			:activeDigit="activeDigit"
@@ -37,31 +37,6 @@ export default {
 	},
 
 	props: {
-		isOriginal: {
-			default: false,
-			required: false,
-			type: Boolean,
-		},
-		isActive: {
-			default: false,
-			required: false,
-			type: Boolean,
-		},
-		isPeerCell: {
-			default: false,
-			required: false,
-			type: Boolean,
-		},
-		isInvalid: {
-			default: false,
-			required: false,
-			type: Boolean,
-		},
-		isPeerDigit: {
-			default: false,
-			required: false,
-			type: Boolean,
-		},
 		col: {
 			required: true,
 			type: Number,
@@ -74,11 +49,40 @@ export default {
 			required: true,
 			type: Number,
 		},
-		value: {
+
+		digit: {
 			default: null,
 			required: false,
 			type: Number,
 		},
+
+		isOriginal: {
+			default: false,
+			required: false,
+			type: Boolean,
+		},
+		isActive: {
+			default: false,
+			required: false,
+			type: Boolean,
+		},
+		isInvalid: {
+			default: false,
+			required: false,
+			type: Boolean,
+		},
+
+		isPeerCell: {
+			default: false,
+			required: false,
+			type: Boolean,
+		},
+		isPeerDigit: {
+			default: false,
+			required: false,
+			type: Boolean,
+		},
+
 		notes: {
 			required: false,
 			type: Array,
@@ -92,18 +96,21 @@ export default {
 
 	computed: {
 		hasNotes() {
-			return this.notes && !!this.notes.filter(value => value).length;
+			return this.notes && !!this.notes.filter(digit => digit).length;
 		},
 	},
 
 	methods: {
 		setActive() {
-			this.$emit('active', this.row, this.col, this.subgrid, this.value, this.isOriginal);
+			this.$emit('active', this.row, this.col, this.subgrid, this.digit, this.isOriginal);
 		},
 	},
 
 	mounted: function () {
-		this.$el.closest('.sudoku-grid').style.fontSize = `${this.$el.offsetHeight * 0.6 / 16}rem`;
+		const elGrid = this.$el.closest('.sudoku-grid');
+		if (elGrid) {
+			elGrid.style.fontSize = `${this.$el.offsetHeight * 0.6 / 16}rem`;
+		}
 	},
 };
 </script>
