@@ -11,7 +11,7 @@
 
 		<!-- <div>{{ $store.state.difficulty }}</div> -->
 
-		<timer
+		<timer-display
 			:seconds="$store.state.seconds"
 			@pause="pauseGame"
 		/>
@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import Timer from './../../components/Timer';
+import TimerDisplay from './../../components/TimerDisplay';
 import Sudoku from './../../components/Sudoku';
 
 export default {
@@ -29,7 +29,7 @@ export default {
 
 	components: {
 		Sudoku,
-		Timer,
+		TimerDisplay,
 	},
 
 	beforeRouteLeave (to, from, next) {

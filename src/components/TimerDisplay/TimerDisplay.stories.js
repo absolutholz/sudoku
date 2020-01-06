@@ -1,48 +1,51 @@
 import { withKnobs, number } from '@storybook/addon-knobs';
 
-import Timer from './Timer.vue';
+import TimerDisplay from './';
+
+const components = { TimerDisplay };
+const template = '<timer-display :seconds="seconds" />';
 
 export default {
-	title: 'Molecules|Timer',
+	title: 'Molecules|Timer Display',
 	decorators: [withKnobs],
 };
 
 export const basic = () => ({
-	components: { Timer },
+	components,
 	props: {
 		seconds: {
 			default: number('Seconds', 0, { min: 0, step: 1 }),
 		},
 	},
-	template: '<timer :seconds="seconds" />',
+	template,
 });
 
 export const seconds = () => ({
-	components: { Timer },
+	components,
 	props: {
 		seconds: {
 			default: number('Seconds', 59, { min: 0, step: 1 }),
 		},
 	},
-	template: '<timer :seconds="seconds" />',
+	template,
 });
 
 export const minutes = () => ({
-	components: { Timer },
+	components,
 	props: {
 		seconds: {
 			default: number('Seconds', 2500, { min: 0, step: 1 }),
 		},
 	},
-	template: '<timer :seconds="seconds" />',
+	template,
 });
 
 export const hours = () => ({
-	components: { Timer },
+	components,
 	props: {
 		seconds: {
 			default: number('Seconds', 59000, { min: 0, step: 1 }),
 		},
 	},
-	template: '<timer :seconds="seconds" />',
+	template,
 });

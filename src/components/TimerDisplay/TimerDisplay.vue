@@ -1,5 +1,6 @@
 <template>
 	<span class="timer">
+		<svg-clock-outline class="icon timer__icon"/>
 		<span v-if="formattedHours"><span class="timer__digit">{{ formattedHours }}</span><abbr class="timer__unit">h</abbr></span>
 		<span v-if="formattedMinutes"><span class="timer__digit">{{ formattedMinutes }}</span><abbr class="timer__unit">m</abbr></span>
 		<span><span class="timer__digit">{{ formattedSeconds }}</span><abbr class="timer__unit">s</abbr></span>
@@ -7,8 +8,14 @@
 </template>
 
 <script>
+import SvgClockOutline from '@mdi/svg/svg/clock-outline.svg';
+
 export default {
-	name: 'Timer',
+	name: 'TimerDisplay',
+
+	components: {
+		SvgClockOutline,
+	},
 
 	props: {
 		seconds: {
@@ -37,3 +44,22 @@ export default {
 	},
 };
 </script>
+
+<style lang="scss">
+.timer {
+	align-items: center;
+	display: inline-flex;
+
+	> * {
+		margin-right: 0.25em;
+
+		&:last-child {
+			margin-right: 0;
+		}
+	}
+
+	&__icon {
+		font-size: 1.125em;
+	}
+}
+</style>
