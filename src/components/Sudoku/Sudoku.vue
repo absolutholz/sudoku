@@ -49,13 +49,13 @@
 					>
 						<sudoku-digit-button
 							:disabled="isActiveCellLocked"
-							@mousedown.prevent="isNotesMode ? setCellNote(value + 1) : setCellValue(value + 1)"
+							@interact="isNotesMode ? setCellNote(value + 1) : setCellValue(value + 1)"
 						>{{ value + 1 }}</sudoku-digit-button>
 					</li>
 					<li>
 						<sudoku-icon-button
 							:disabled="isActiveCellLocked"
-							@mousedown.prevent="clearCell"
+							@interact="clearCell"
 						><template #icon><svg-eraser class="icon" /></template>Erase</sudoku-icon-button>
 					</li>
 				</ol>
@@ -182,6 +182,7 @@ export default {
 		},
 
 		setCellValue(value) {
+			console.log(value);
 			if (this.isActiveCellLocked) {
 				return;
 			}
@@ -204,6 +205,7 @@ export default {
 		},
 
 		setCellNote(value) {
+			console.log(value);
 			if (this.isActiveCellLocked) {
 				return;
 			}

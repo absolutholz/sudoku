@@ -1,20 +1,21 @@
 <template>
-	<btn
-		class="btn--icon-text"
+	<button
+		class="btn btn--icon-text"
+		@click="onInteract"
 	>
 		<slot name="icon" />
 		<span><slot /></span>
-	</btn>
+	</button>
 </template>
 
 <script>
-import Btn from './../Btn';
-
 export default {
 	name: 'SudokuIconButton',
 
-	components: {
-		Btn,
+	methods: {
+		onInteract () {
+			this.$emit('interact');
+		},
 	},
 };
 </script>

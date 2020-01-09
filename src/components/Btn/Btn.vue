@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: "Generic Button"
+  name: "Btn"
 };
 </script>
 

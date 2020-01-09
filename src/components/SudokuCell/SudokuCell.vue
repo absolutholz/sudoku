@@ -166,6 +166,7 @@ export default {
 
 	&--peer-cell {
 		--cell-bg-alpha: 0.2;
+		--cell-bg-sat: 25%;
 	}
 
 	&--peer-digit {

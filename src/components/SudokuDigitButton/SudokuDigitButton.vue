@@ -1,17 +1,18 @@
 <template>
-	<btn
-		class="btn--digit"
-	><slot /></btn>
+	<button
+		class="btn btn--digit"
+		@click="onInteract"
+	><slot /></button>
 </template>
 
 <script>
-import Btn from './../Btn';
-
 export default {
 	name: 'SudokuDigitButton',
 
-	components: {
-		Btn,
+	methods: {
+		onInteract () {
+			this.$emit('interact');
+		},
 	},
 };
 </script>
