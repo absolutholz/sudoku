@@ -1,19 +1,31 @@
 <template>
-  <span class="timer">
-    <svg-clock-outline class="icon timer__icon" />
-    <span v-if="formattedHours">
-      <span class="timer__digit">{{ formattedHours }}</span>
-      <abbr class="timer__unit">h</abbr>
-    </span>
-    <span v-if="formattedMinutes">
-      <span class="timer__digit">{{ formattedMinutes }}</span>
-      <abbr class="timer__unit">m</abbr>
-    </span>
-    <span>
-      <span class="timer__digit">{{ formattedSeconds }}</span>
-      <abbr class="timer__unit">s</abbr>
-    </span>
-  </span>
+	<span class="timer">
+		<svg-clock-outline
+			aria-hidden="true"
+			class="icon timer__icon"
+		/>
+		<span v-if="formattedHours">
+			<span class="timer__digit">{{ formattedHours }}</span>
+			<abbr
+				:aria-label="formattedHours > 1 ? 'hours' : 'hour'"
+				class="timer__unit"
+			>h</abbr>
+		</span>
+		<span v-if="formattedMinutes">
+			<span class="timer__digit">{{ formattedMinutes }}</span>
+			<abbr
+				:aria-label="formattedHours > 1 ? 'minutes' : 'minute'"
+				class="timer__unit"
+			>m</abbr>
+		</span>
+		<span>
+			<span class="timer__digit">{{ formattedSeconds }}</span>
+			<abbr
+				:aria-label="formattedHours > 1 ? 'seconds' : 'second'"
+				class="timer__unit"
+			>s</abbr>
+		</span>
+	</span>
 </template>
 
 <script>
@@ -49,8 +61,8 @@ export default {
     formattedHours() {
       const min = Math.floor(this.seconds / 60);
       return Math.floor(min / 60);
-    }
-  }
+    },
+  },
 };
 </script>
 
