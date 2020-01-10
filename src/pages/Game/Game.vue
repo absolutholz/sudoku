@@ -11,16 +11,20 @@
 
 		<!-- <div>{{ $store.state.difficulty }}</div> -->
 
-		<timer-display
-			:seconds="$store.state.seconds"
-			@pause="pauseGame"
-		/>
-
+		<div>
+			<span>{{ difficultyLevel }}</span>
+			<timer-display
+				:seconds="$store.state.seconds"
+				@pause="pauseGame"
+			/>
+		</div>
 		<sudoku />
 	</div>
 </template>
 
 <script>
+import difficultyLevels from './../../difficulty-levels';
+
 import TimerDisplay from './../../components/TimerDisplay';
 import Sudoku from './../../components/Sudoku';
 
@@ -35,6 +39,12 @@ export default {
 	beforeRouteLeave (to, from, next) {
 		this.$store.dispatch('pauseGame');
 		next();
+	},
+
+	computed: {
+		difficultyLevel () {
+			return difficultyLevels[this.$store.state.difficulty];
+		},
 	},
 
 	methods: {
