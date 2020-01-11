@@ -14,14 +14,14 @@
 		<span v-if="formattedMinutes">
 			<span class="timer__digit">{{ formattedMinutes }}</span>
 			<abbr
-				:aria-label="formattedHours > 1 ? 'minutes' : 'minute'"
+				:aria-label="formattedMinutes > 1 ? 'minutes' : 'minute'"
 				class="timer__unit"
 			>m</abbr>
 		</span>
 		<span>
 			<span class="timer__digit">{{ formattedSeconds }}</span>
 			<abbr
-				:aria-label="formattedHours > 1 ? 'seconds' : 'second'"
+				:aria-label="formattedSeconds > 1 ? 'seconds' : 'second'"
 				class="timer__unit"
 			>s</abbr>
 		</span>
