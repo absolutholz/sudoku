@@ -1,0 +1,15 @@
+version: '3.3'
+
+services:
+  vue:
+    image: sudoku-vue
+    build: .
+    working_dir: /home/sudoku
+    environment:
+      NODE_ENV: development
+    ports:
+      - 8000:8000 # vue ui
+      - 8080:8080 # vue dev
+      - 6006:6006 # storybook
+    volumes:
+      - ./:/home/sudoku
