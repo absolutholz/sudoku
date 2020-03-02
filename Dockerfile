@@ -15,8 +15,7 @@ ENV NODE_ENV development
 WORKDIR /home/sudoku
 
 RUN npm i -g @vue/cli
-RUN npm install
 
-CMD tail -f /dev/null
+# CMD tail -f /dev/null
 
 # CMD npm run serve

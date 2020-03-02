@@ -13,3 +13,8 @@ services:
       - 6006:6006 # storybook
     volumes:
       - ./:/home/sudoku
+      - "npm_cache:/home/sudoku/node_modules"
+    command: bash -c "npm install && npm run install && vue ui -H 0.0.0.0"
+
+volumes:
+  npm_cache:
