@@ -1,6 +1,16 @@
 FROM node
 
-ENV NODE_ENV development
+WORKDIR /home/sudoku
+
+RUN npm i -g @vue/cli
+
+COPY package.json .
+COPY package-lock.json .
+
+RUN npm install && npm run install
+
+
+# ENV NODE_ENV development
 
 # WORKDIR /usr/src/app
 
@@ -12,9 +22,9 @@ ENV NODE_ENV development
 
 # EXPOSE 3000
 
-WORKDIR /home/sudoku
+# WORKDIR /home/sudoku
 
-RUN npm i -g @vue/cli
+# RUN npm i -g @vue/cli
 
 # CMD tail -f /dev/null
 
