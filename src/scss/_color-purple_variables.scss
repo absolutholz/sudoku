@@ -1,0 +1,52 @@
+// https://www.colorbox.io/#steps=11#hue_start=272#hue_end=272#hue_curve=easeInQuad#sat_start=0#sat_end=100#sat_curve=easeOutQuad#sat_rate=100#lum_start=100#lum_end=0#lum_curve=easeOutQuad#lock_hex=512e70#minor_steps_map=none
+$color-purple-map: (
+	100: (
+		hex: #e7d5f8,
+		hsl: 271 71% 90%,
+		name: "Moon Raker",
+	),
+	200: (
+		hex: #ceabed,
+		hsl: 272 65% 80%,
+		name: "Biloba Flower",
+	),
+	300: (
+		hex: #b687df,
+		hsl: 272 58% 72%,
+		name: "Lavender",
+		notes: "slight variation on the original hsl(272 58% 7%) because original was close, but no AAA on small text",
+	),
+	400: (
+		hex: #9e6acc,
+		hsl: 272 49% 61%,
+		name: "Amethyst",
+		notes: "no AAA on small text",
+	),
+	500: (
+		hex: #8653b4,
+		hsl: 272 39% 52%,
+		name: "Studio",
+		notes: "no AAA on small text",
+	),
+	600: (
+		hex: #6d4096,
+		hsl: 271 40 42%,
+		name: "Royal Purple",
+	),
+	700: (
+		hex: #512e70,
+		hsl: 272 42% 31%,
+		name: "Jacarta",
+		notes: "base color",
+	),
+	800: (
+		hex: #33144f,
+		hsl: 272 60% 19%,
+		name: "Grape",
+	),
+	900: (
+		hex: #180528,
+		hsl: 273 78% 9%,
+		name: "Violet",
+	),
+);
