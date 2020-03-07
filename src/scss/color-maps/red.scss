@@ -1,0 +1,53 @@
+// https://www.colorbox.io/#steps=11#hue_start=0#hue_end=0#hue_curve=easeInQuad#sat_start=0#sat_end=100#sat_curve=easeOutQuad#sat_rate=100#lum_start=100#lum_end=0#lum_curve=easeOutQuad#lock_hex=b22222#minor_steps_map=none
+// firebrick
+$color-map-red: (
+	100: (
+		hex: #fccfcf,
+		hsl: 0 88% 90%,
+		name: "Cinderella",
+	),
+	200: (
+		hex: #f69f9f,
+		hsl: 0 83% 79%,
+		name: "Wewak",
+	),
+	300: (
+		hex: #ee7c7c,
+		hsl: 0 77% 71%,
+		name: "Apricot",
+		notes: "slight variation on the original hsl(0 77% 71%) because original was close, but no AAA on small text",
+	),
+	400: (
+		hex: #df5151,
+		hsl: 0 69% 60%,
+		name: "Mandy",
+		notes: "no AAA on small text",
+	),
+	500: (
+		hex: #cc3636,
+		hsl: 0 60% 51%,
+		name: "Flush Mahogany",
+		notes: "no AAA on small text",
+	),
+	600: (
+		hex: #ab2121,
+		hsl: 0 68 40%,
+		name: "Mexican Red, aka Firebrick",
+		notes: "base color, slight variation on the original hsl(0 68% 40%) because original was close, but no AAA on small text",
+	),
+	700: (
+		hex: #8e1111,
+		hsl: 0 70% 31%,
+		name: "Tamarillo",
+	),
+	800: (
+		hex: #620707,
+		hsl: 0 87% 21%,
+		name: "Mahogany",
+	),
+	900: (
+		hex: #320101,
+		hsl: 0 96% 10%,
+		name: "Chocolate",
+	),
+);
