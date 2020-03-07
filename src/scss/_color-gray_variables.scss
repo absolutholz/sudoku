@@ -1,0 +1,51 @@
+// https://meyerweb.com/eric/tools/color-blend/#111111:FFFFF8:7:hex
+// http://chir.ag/projects/name-that-color/
+$color-gray-map: (
+	900: (
+		hex: #111,
+		hsl: 0 0% 7%,
+		name: "Cod Gray",
+	),
+	800: (
+		hex: #2f2f2e,
+		hsl: 60 1% 18%,
+		name: "Tuatara",
+	),
+	700: (
+		hex: #4d4d4b,
+		hsl: 60 1% 30%,
+		name: "Fuscous Gray",
+	),
+	600: (
+		hex: #6a6a68,
+		hsl: 60 1% 41%,
+		name: "Storm Dust",
+		notes: "no AAA on small text",
+	),
+	500: (
+		hex: #888885,
+		hsl: 60 1% 53%,
+		name: "Friar Gray",
+		notes: "only AA on large text",
+	),
+	400: (
+		hex: #a6a6a1,
+		hsl: 60 3% 64%,
+		name: "Delta",
+	),
+	300: (
+		hex: #c4c4be,
+		hsl: 60 5% 76%,
+		name: "Gray Nickel",
+	),
+	200: (
+		hex: #e1e1db,
+		hsl: 60 9% 87%,
+		name: "Westar",
+	),
+	100: (
+		hex: #fffff8,
+		hsl: 60 100% 99%,
+		name: "Black White",
+	),
+);
