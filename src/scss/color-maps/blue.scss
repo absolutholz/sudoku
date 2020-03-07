@@ -1,0 +1,51 @@
+// https://www.colorbox.io/#steps=11#hue_start=217#hue_end=217#hue_curve=easeInQuad#sat_start=0#sat_end=100#sat_curve=easeOutQuad#sat_rate=100#lum_start=100#lum_end=0#lum_curve=easeOutQuad#lock_hex=512e70#minor_steps_map=none
+// Dodger Blue, aka: internet-blue
+$color-map-blue: (
+	100: (
+		hex: #cde1ff,
+		hsl: 216 100% 90%,
+		name: "Onahau",
+	),
+	200: (
+		hex: #99c0ff,
+		hsl: 217 100% 80%,
+		name: "Anakiwa",
+	),
+	300: (
+		hex: #699fff,
+		hsl: 218 100% 71%,
+		name: "Malibu",
+	),
+	400: (
+		hex: #3f82f9,
+		hsl: 218 94% 61%,
+		name: "Dodger Blue",
+		notes: "base color; no AAA on small text",
+	),
+	500: (
+		hex: #2467df,
+		hsl: 219 75% 51%,
+		name: "Mariner",
+		notes: "no AAA on small text",
+	),
+	600: (
+		hex: #1250bf,
+		hsl: 218 83 41%,
+		name: "Denim",
+	),
+	700: (
+		hex: #073b97,
+		hsl: 218 91% 31%,
+		name: "Congress Blue",
+	),
+	800: (
+		hex: #022769,
+		hsl: 218 96% 21%,
+		name: "Midnight Blue",
+	),
+	900: (
+		hex: #001335,
+		hsl: 218 100% 10%,
+		name: "Midnight",
+	),
+);
