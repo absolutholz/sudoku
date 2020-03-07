@@ -1,0 +1,51 @@
+// https://www.colorbox.io/#steps=11#hue_start=120#hue_end=120#hue_curve=easeInQuad#sat_start=0#sat_end=100#sat_curve=easeOutQuad#sat_rate=100#lum_start=100#lum_end=0#lum_curve=easeOutQuad#lock_hex=228b22#minor_steps_map=none
+// forestgreen
+$color-map-red: (
+	100: (
+		hex: #cffbcf,
+		hsl: 120 85% 90%,
+		name: "Gossip",
+	),
+	200: (
+		hex: #a0f4a0,
+		hsl: 120 79% 79%,
+		name: "Gossip",
+	),
+	300: (
+		hex: #76ea76,
+		hsl: 120 73% 69%,
+		name: "Pastel Green",
+	),
+	400: (
+		hex: #54db54,
+		hsl: 120 65% 59%,
+		name: "Pastel Green",
+	),
+	500: (
+		hex: #3ac63a,
+		hsl: 120 55% 50%,
+		name: "Apple",
+	),
+	600: (
+		hex: #26ac26,
+		hsl: 120 64% 41%,
+		name: "Forest Green",
+		notes: "base color, no AAA on small text",
+	),
+	700: (
+		hex: #188a18,
+		hsl: 120 70% 32%,
+		name: "La Palma",
+		notes: "no AA or AAA",
+	),
+	800: (
+		hex: #0e610e,
+		hsl: 120 75% 22%,
+		name: "Dark Fern",
+	),
+	900: (
+		hex: #033103,
+		hsl: 120 88% 10%,
+		name: "English Holly",
+	),
+);
