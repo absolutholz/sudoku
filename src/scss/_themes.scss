@@ -1,0 +1,46 @@
+@import "./color-maps/gray-scale.scss";
+@import "./color-maps/purple.scss";
+
+@mixin color($color, $format: hsl) {
+	@if ($format = hsl) {
+		@return #{hsl(nth($gray, 1), nth($gray, 2), nth($gray, 3))};
+	}
+	@return $color;
+}
+
+:root {
+	--base-light: color(map-get(map-get($color-map-gray-scale, 100), hsl));
+	--base-dark: color(map-get(map-get($color-map-gray-scale, 900), hsl));
+
+	--bg: --base-light;
+	--color: --base-dark;
+
+	--highlight: color(map-get(map-get($color-map-purple, 600), hsl));
+	--highlight-1: color(map-get(map-get($color-map-purple, 800), hsl));
+
+	background: var(--bg);
+	color: var(--color);
+
+	@media (prefers-color-scheme: dark) {
+		--bg: --base-dark;
+		--color: --base-light;
+	}
+
+	&.t-dark {
+		--bg: --base-dark;
+		--color: --base-light;
+	}
+}
+
+// .t-purple {
+// 	@media (prefers-color-scheme: dark) {
+// 		--bg: --base-dark;
+// 		--color: --base-light;
+// 	}
+
+// 	.t-dark &,
+// 	&.t-dark {
+// 		--bg: --base-dark;
+// 		--color: --base-light;
+// 	}
+// }
