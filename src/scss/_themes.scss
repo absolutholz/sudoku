@@ -1,46 +1,100 @@
 @import "./color-maps/gray-scale.scss";
 @import "./color-maps/purple.scss";
+@import "./color-maps/blue.scss";
+@import "./color-maps/green.scss";
+@import "./color-maps/red.scss";
 
-@mixin color($color, $format: hsl) {
+@function color($color, $format: hsl) {
 	@if ($format = hsl) {
-		@return #{hsl(nth($gray, 1), nth($gray, 2), nth($gray, 3))};
+		@return #{hsl(nth($color, 1), nth($color, 2), nth($color, 3))};
 	}
 	@return $color;
 }
 
+@function get-hsl($map, $key) {
+	@return map-get(map-get($map, $key), hsl);
+}
+
+@mixin theme(
+	$primary-dark,
+	$primary-dark-1,
+	$primary-light,
+	$primary-light-1,
+) {
+	&,
+	&.t-light {
+		--primary: #{$primary-dark};
+		--primary-alt: #{$primary-dark-1};
+	}
+
+	&.t-dark {
+		--primary: #{$primary-light};
+		--primary-alt: #{$primary-light-1};
+	}
+
+	@media (prefers-color-scheme: dark) {
+		--primary: #{$primary-light};
+		--primary-alt: #{$primary-light-1};
+	}
+}
+
 :root {
-	--base-light: color(map-get(map-get($color-map-gray-scale, 100), hsl));
-	--base-dark: color(map-get(map-get($color-map-gray-scale, 900), hsl));
+	$black: color(get-hsl($color-map-gray-scale, 900));
+	$white: color(get-hsl($color-map-gray-scale, 100), hsl);
 
-	--bg: --base-light;
-	--color: --base-dark;
-
-	--highlight: color(map-get(map-get($color-map-purple, 600), hsl));
-	--highlight-1: color(map-get(map-get($color-map-purple, 800), hsl));
+	--base-light: #{$white};
+	--base-dark: #{$black};
 
 	background: var(--bg);
 	color: var(--color);
 
-	@media (prefers-color-scheme: dark) {
-		--bg: --base-dark;
-		--color: --base-light;
+	&,
+	&.t-light {
+		--bg: var(--base-light);
+		--color: var(--base-dark);
 	}
 
 	&.t-dark {
-		--bg: --base-dark;
-		--color: --base-light;
+		--bg: var(--base-dark);
+		--color: var(--base-light);
 	}
+
+	@media (prefers-color-scheme: dark) {
+		--bg: var(--base-dark);
+		--color: var(--base-light);
+	}
+
+	@include theme(
+		color(get-hsl($color-map-purple, 600), hsl),
+		color(get-hsl($color-map-purple, 800), hsl),
+		color(get-hsl($color-map-purple, 300), hsl),
+		color(get-hsl($color-map-purple, 200), hsl),
+	);
 }
 
-// .t-purple {
-// 	@media (prefers-color-scheme: dark) {
-// 		--bg: --base-dark;
-// 		--color: --base-light;
-// 	}
+.t-blue {
+	@include theme(
+		color(get-hsl($color-map-blue, 600), hsl),
+		color(get-hsl($color-map-blue, 800), hsl),
+		color(get-hsl($color-map-blue, 300), hsl),
+		color(get-hsl($color-map-blue, 200), hsl),
+	);
+}
 
-// 	.t-dark &,
-// 	&.t-dark {
-// 		--bg: --base-dark;
-// 		--color: --base-light;
-// 	}
-// }
+.t-green {
+	@include theme(
+		color(get-hsl($color-map-green, 800), hsl),
+		color(get-hsl($color-map-green, 900), hsl),
+		color(get-hsl($color-map-green, 500), hsl),
+		color(get-hsl($color-map-green, 300), hsl),
+	);
+}
+
+.t-red {
+	@include theme(
+		color(get-hsl($color-map-red, 700), hsl),
+		color(get-hsl($color-map-red, 800), hsl),
+		color(get-hsl($color-map-red, 300), hsl),
+		color(get-hsl($color-map-red, 200), hsl),
+	);
+}

@@ -8,61 +8,67 @@
 @include font-face ("Rubik", "/fonts/Rubik/subset/rubik-light-webfont", $typography-weight-light, $exts: woff2);
 // @include font-face ("Rubik", "/fonts/Rubik/subset/rubik-medium-webfont", $typography-weight-medium, $exts: woff2);
 
-$root-background-color: var(--bg);
-$root-typography-color: var(--typo);
-
 @import "~semantic-reboot/src/reboot";
-@import "./theme-base";
-@import "./layout";
+@import "./themes";
 
-.icon {
-	color: inherit;
-	fill: currentColor;
-	height: 1em;
-	width: 1em;
+$root-background-color: var(--bg);
+$root-typography-color: var(--color);
+
+a {
+	color: var(--primary);
 }
 
-@import "~scss-mixins-functions-variables/scss/reset/list/reset-list-mixins";
+// @import "./theme-base";
+// @import "./layout";
 
-.btn {
-	align-items: center;
-	background: none;
-	border: 0;
-	color: inherit;
-	cursor: pointer;
-	//   display: inline-flex;
-	justify-content: center;
-	text-decoration: none;
+// .icon {
+// 	color: inherit;
+// 	fill: currentColor;
+// 	height: 1em;
+// 	width: 1em;
+// }
 
-	&:disabled {
-		cursor: not-allowed;
-		opacity: 0.5;
-	}
+// @import "~scss-mixins-functions-variables/scss/reset/list/reset-list-mixins";
 
-	&--with-switch {
-	  	flex-direction: column;
+// .btn {
+// 	align-items: center;
+// 	background: none;
+// 	border: 0;
+// 	color: inherit;
+// 	cursor: pointer;
+// 	//   display: inline-flex;
+// 	justify-content: center;
+// 	text-decoration: none;
 
-		[role="switch"] {
-			font-size: 0.75em;
-		}
-	}
+// 	&:disabled {
+// 		cursor: not-allowed;
+// 		opacity: 0.5;
+// 	}
 
-	&__small {
-		font-size: 0.75rem;
-		text-transform: none;
-	}
-}
+// 	&--with-switch {
+// 	  	flex-direction: column;
 
-  .btn-grid {
-	@include reset-list;
+// 		[role="switch"] {
+// 			font-size: 0.75em;
+// 		}
+// 	}
 
-	display: inline-grid;
-	grid-gap: 1rem;
-	grid-template-columns: repeat(5, auto);
+// 	&__small {
+// 		font-size: 0.75rem;
+// 		text-transform: none;
+// 	}
+// }
 
-	> li {
-		align-items: center;
-		display: flex;
-		justify-content: center;
-	}
-}
+//   .btn-grid {
+// 	@include reset-list;
+
+// 	display: inline-grid;
+// 	grid-gap: 1rem;
+// 	grid-template-columns: repeat(5, auto);
+
+// 	> li {
+// 		align-items: center;
+// 		display: flex;
+// 		justify-content: center;
+// 	}
+// }
