@@ -1,21 +1,23 @@
 import { withKnobs, boolean } from '@storybook/addon-knobs';
+import { withContexts } from '@storybook/addon-contexts/vue';
+import { contexts } from '../../../.storybook/configs/contexts';
 
-import SwitchButton from './SwitchButton.vue';
+import SwitchButton from '.';
 
 export default {
 	title: 'Atoms|Switch Button',
-	decorators: [withKnobs],
+	decorators: [withKnobs, withContexts(contexts)],
 };
 
-export const basic = () => ({
-	components: { SwitchButton },
-	props: {
-		state: {
-			default: boolean('State', false),
-		},
-	},
-	template: '<switch-button :state="state" />',
-});
+// export const basic = () => ({
+// 	components: { SwitchButton },
+// 	props: {
+// 		state: {
+// 			default: boolean('State', false),
+// 		},
+// 	},
+// 	template: '<switch-button :state="state" />',
+// });
 
 export const on = () => ({
 	components: { SwitchButton },

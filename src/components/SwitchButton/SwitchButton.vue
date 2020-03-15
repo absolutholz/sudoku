@@ -16,7 +16,7 @@
 
 <template>
 	<button
-		class="toggler"
+		class="switch"
 		role="switch"
 		:aria-checked="`${state}`"
 		@click="toggle"
@@ -44,31 +44,36 @@ export default {
 </script>
 
 <style lang="scss">
+@import "./../../scss/_color.functions.scss";
+
 [role="switch"] {
-	// reset button
-	background: none;
-	border: 0;
-	color: inherit;
-	// font-size: 1.25rem;
+	font-size: 1.125rem;
 	padding: 0.15em;
 	position: relative;
 	height: 1em;
 	width: 2em;
+	z-index: 0;
 
 	&::before {
-		background: #c6c5c5;
+		// background: #c6c5c5;
+		background: css-hsl(var(--gray-dark));
 		border-radius: 9em;
 		content: "";
 		display: block;
 		height: 100%;
+		opacity: 0.5;
 		transition: background-color 250ms;
 		width: 100%;
+		z-index: 1;
 	}
 
 	&::after {
-		background: #f1f1f1;
-		border-radius: 9em;
-		box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.12), 0 2px 2px 0 rgba(0, 0, 0, 0.24);
+		background: css-hsl(var(--gray-light));
+		border-radius: 50%;
+		box-shadow:
+			0 0 2px 0 css-hsla((var(--color), 0.12)),
+			0 2px 2px 0 css-hsla((var(--color), 0.24));
+		// box-shadow: var(--shadow-1), var(--shadow-2);
 		content: "";
 		display: block;
 		height: 1em;
@@ -77,17 +82,42 @@ export default {
 		top: 0;
 		transition: left 250ms;
 		width: 1em;
+		z-index: 2;
 	}
 
 	&[aria-checked="true"] {
 		&::before {
-			background: transparentize(#5b8edc, 0.5);
+			// background: transparentize(#2a2a2b, 0.5);
+			background: css-hsla(var(--primary-dark));
 		}
 
 		&::after {
-			background: #5b8edc;
+			background: css-hsla(var(--primary));
 			left: calc(100% - 1em);
 		}
 	}
 }
+
+// .switch {
+// 	font-size: 1.5rem;
+
+// 	&::before {
+// 		background: var(--color);
+// 		border-radius: 9em;
+// 		content: "";
+// 		display: block;
+// 		height: 1em;
+// 		opacity: 0.5;
+// 		width: 1.5em;
+// 	}
+
+// 	&::after {
+// 		border-radius: 50%;
+// 		content: "";
+// 		display: block;
+// 		font-size: 1.167em;
+// 		height: 1em;
+// 		width: 1em;
+// 	}
+// }
 </style>
