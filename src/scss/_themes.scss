@@ -1,52 +1,54 @@
+@import "./list.functions";
+@import "./theme.functions";
+
 @import "./color-maps/gray-scale.scss";
 @import "./color-maps/purple.scss";
 @import "./color-maps/blue.scss";
 @import "./color-maps/green.scss";
 @import "./color-maps/red.scss";
 
-@function color($color, $format: hsl) {
-	@if ($format = hsl) {
-		@return #{hsl(nth($color, 1), nth($color, 2), nth($color, 3))};
-	}
-	@return $color;
-}
-
-@function get-hsl($map, $key) {
-	@return map-get(map-get($map, $key), hsl);
-}
-
-@mixin theme(
-	$primary-dark,
-	$primary-dark-1,
-	$primary-light,
-	$primary-light-1,
+@mixin theme-dark(
+	$primary,
+	$primary-darker,
+	$primary-lighter,
 ) {
-	&,
-	&.t-light {
-		--primary: #{$primary-dark};
-		--primary-alt: #{$primary-dark-1};
-	}
-
 	&.t-dark {
-		--primary: #{$primary-light};
-		--primary-alt: #{$primary-light-1};
+		--primary: #{$primary};
+		--primary-dark: #{$primary-darker};
+		--primary-light: #{$primary-lighter};
 	}
 
 	@media (prefers-color-scheme: dark) {
-		--primary: #{$primary-light};
-		--primary-alt: #{$primary-light-1};
+		--primary: #{$primary};
+		--primary-dark: #{$primary-darker};
+		--primary-light: #{$primary-lighter};
+	}
+}
+
+@mixin theme-light(
+	$primary,
+	$primary-darker,
+	$primary-lighter,
+) {
+	&,
+	&.t-light {
+		--primary: #{$primary};
+		--primary-dark: #{$primary-darker};
+		--primary-light: #{$primary-lighter};
 	}
 }
 
 :root {
-	$black: color(get-hsl($color-map-gray-scale, 900));
-	$white: color(get-hsl($color-map-gray-scale, 100), hsl);
+	--base-dark: #{get-hsl-string($color-map-gray-scale, 900)};
+	--base-light: #{get-hsl-string($color-map-gray-scale, 100)};
 
-	--base-light: #{$white};
-	--base-dark: #{$black};
+	--gray-dark-darker: #{get-hsl-string($color-map-gray-scale, 800)};
+	--gray-dark: #{get-hsl-string($color-map-gray-scale, 700)};
+	--gray-dark-lighter: #{get-hsl-string($color-map-gray-scale, 600)};
 
-	background: var(--bg);
-	color: var(--color);
+	--gray-light-lighter: #{get-hsl-string($color-map-gray-scale, 400)};
+	--gray-light: #{get-hsl-string($color-map-gray-scale, 300)};
+	--gray-light-darker: #{get-hsl-string($color-map-gray-scale, 200)};
 
 	&,
 	&.t-light {
@@ -64,37 +66,57 @@
 		--color: var(--base-light);
 	}
 
-	@include theme(
-		color(get-hsl($color-map-purple, 600), hsl),
-		color(get-hsl($color-map-purple, 800), hsl),
-		color(get-hsl($color-map-purple, 300), hsl),
-		color(get-hsl($color-map-purple, 200), hsl),
+	@include theme-dark(
+		get-hsl-string($color-map-purple, 300),
+		get-hsl-string($color-map-purple, 400),
+		get-hsl-string($color-map-purple, 200),
+	);
+
+	@include theme-light(
+		get-hsl-string($color-map-purple, 600),
+		get-hsl-string($color-map-purple, 700),
+		get-hsl-string($color-map-purple, 500),
 	);
 }
 
 .t-blue {
-	@include theme(
-		color(get-hsl($color-map-blue, 600), hsl),
-		color(get-hsl($color-map-blue, 800), hsl),
-		color(get-hsl($color-map-blue, 300), hsl),
-		color(get-hsl($color-map-blue, 200), hsl),
+	@include theme-dark(
+		get-hsl-string($color-map-blue, 200),
+		get-hsl-string($color-map-blue, 300),
+		get-hsl-string($color-map-blue, 100),
+	);
+
+	@include theme-light(
+		get-hsl-string($color-map-blue, 600),
+		get-hsl-string($color-map-blue, 700),
+		get-hsl-string($color-map-blue, 500),
 	);
 }
 
 .t-green {
-	@include theme(
-		color(get-hsl($color-map-green, 800), hsl),
-		color(get-hsl($color-map-green, 900), hsl),
-		color(get-hsl($color-map-green, 500), hsl),
-		color(get-hsl($color-map-green, 300), hsl),
+	@include theme-dark(
+		get-hsl-string($color-map-green, 400),
+		get-hsl-string($color-map-green, 500),
+		get-hsl-string($color-map-green, 300),
+	);
+
+	@include theme-light(
+		get-hsl-string($color-map-green, 700),
+		get-hsl-string($color-map-green, 800),
+		get-hsl-string($color-map-green, 600),
 	);
 }
 
 .t-red {
-	@include theme(
-		color(get-hsl($color-map-red, 700), hsl),
-		color(get-hsl($color-map-red, 800), hsl),
-		color(get-hsl($color-map-red, 300), hsl),
-		color(get-hsl($color-map-red, 200), hsl),
+	@include theme-dark(
+		get-hsl-string($color-map-red, 300),
+		get-hsl-string($color-map-red, 200),
+		get-hsl-string($color-map-red, 100),
+	);
+
+	@include theme-light(
+		get-hsl-string($color-map-red, 600),
+		get-hsl-string($color-map-red, 700),
+		get-hsl-string($color-map-red, 500),
 	);
 }

@@ -1,0 +1,7 @@
+@function get-hsl-list($color-map, $level-key) {
+	@return map-get(map-get($color-map, $level-key), hsl);
+}
+
+@function get-hsl-string ($color-map, $level-key) {
+	@return to-string(get-hsl-list($color-map, $level-key), ', ');
+}

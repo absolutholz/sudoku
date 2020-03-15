@@ -1,5 +1,5 @@
 // https://www.colorbox.io/#steps=11#hue_start=217#hue_end=217#hue_curve=easeInQuad#sat_start=0#sat_end=100#sat_curve=easeOutQuad#sat_rate=100#lum_start=100#lum_end=0#lum_curve=easeOutQuad#lock_hex=512e70#minor_steps_map=none
-// Dodger Blue, aka: internet-blue
+// Dodger Blue aka: internet-blue
 $color-map-blue: (
 	100: (
 		hex: #cde1ff,
@@ -30,7 +30,7 @@ $color-map-blue: (
 	),
 	600: (
 		hex: #1250bf,
-		hsl: 218 83 41%,
+		hsl: 218 83% 41%,
 		name: "Denim",
 	),
 	700: (
