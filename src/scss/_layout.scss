@@ -1,7 +1,25 @@
-.l-page-container {
+@import "./layout.variables";
+@import "./layout.functions";
+
+:root {
+	--gutter: #{$gutter-small};
+	--offset: #{$offset-small};
+
+	@include for-medium-up () {
+		--gutter: #{$gutter-medium};
+		--offset: #{$offset-medium};
+	}
+
+	@include for-large-up () {
+		--gutter: #{$gutter-large};
+		--offset: #{$offset-large};
+	}
+}
+
+.l-container {
 	margin-left: auto;
 	margin-right: auto;
-	max-width: 1024px;
-	padding-left: 1rem;
-	padding-right: 1rem;
+	max-width: calc(#{$max-width} + (var(--offset) * 2));
+	padding-left: var(--offset);
+	padding-right: var(--offset);
 }
