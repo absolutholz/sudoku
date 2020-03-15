@@ -1,83 +1,135 @@
 <template>
-  <main class="l-page-container page--home">
-    <h1>Sudoku</h1>
+	<main>
+		<div class="l-container">
+			<hdln nodeType="h1" variant="page"><abbr aria-label="Progressive Web App" title="Progressive Web App">PWA</abbr> <b>Sudoku</b></hdln>
+		</div>
 
-    <section class="page-section" v-if="$store.state.puzzle.length">
-      <h2 class="page-section__hdln">Current game</h2>
-      <div>
-        <button class="page-section__btn" @click="resumeGame()">Resume</button>
-      </div>
-    </section>
+		<section class="section" v-if="$store.state.puzzle.length">
+			<div class="l-container">
+				<hdln nodeType="h2" variant="sector"><b>Current</b> game</hdln>
 
-    <section class="page-section">
-      <h2 class="page-section__hdln">New game</h2>
-      <ol class="levels-list">
-        <li v-for="(display, level) in levels" :key="`difficulty-level-${ level }`">
-          <button class="page-section__btn" @click="startNewGame(level)">{{ display }}</button>
-        </li>
-      </ol>
-    </section>
+				<div>
+					<btn variant="outlined" @click="resumeGame()">Resume</btn>
+				</div>
+			</div>
+		</section>
 
-    <section class="page-section">
-      <h2 class="page-section__hdln">Gameplay Settings</h2>
-      <div>
-        <router-link class="page-section__btn" to="/settings">Settings</router-link>
-      </div>
-    </section>
-  </main>
+		<section class="section">
+			<div class="l-container">
+				<hdln nodeType="h2" variant="sector"><b>New</b> Game</hdln>
+
+				<level-selection :levels="levels" @levelSelection="onLevelSelected"></level-selection>
+			</div>
+		</section>
+
+		<section class="section">
+			<div class="l-container">
+				<hdln nodeType="h2" variant="sector">Settings & Rules</hdln>
+
+				<div>
+					<router-link to="/settings">Settings</router-link>
+					<br>
+					<a href="https://sudoku.com/how-to-play/sudoku-rules-for-complete-beginners/" rel="nofollow noreferrer" target="_blank">How to play</a>
+				</div>
+			</div>
+		</section>
+	</main>
 </template>
 
 <script>
 import levels from "./../../difficulty-levels";
 
+import Hdln from './../../components/Headline';
+import Btn from './../../components/Btn';
+import LevelSelection from './../../components/LevelSelection';
+
 export default {
-  name: "HomePage",
+	name: "HomePage",
 
-  data() {
-    return {
-      difficulty: false,
-      levels
-    };
-  },
+	components: {
+		Hdln,
+		Btn,
+		LevelSelection,
+	},
 
-  methods: {
-    startNewGame(difficulty) {
-      this.$store.commit("generatePuzzle", { difficulty });
-      this.$store.dispatch("startGame");
-      this.$router.push({
-        name: "game"
-      });
-    },
+	data () {
+		return {
+			difficulty: false,
+			levels,
+		};
+	},
 
-    resumeGame() {
-      this.$router.push({
-        name: "game"
-      });
-    }
-  }
+	methods: {
+		startNewGame (difficulty) {
+			this.$store.commit("generatePuzzle", { difficulty });
+			this.$store.dispatch("startGame");
+			this.$router.push({
+				name: "game"
+			});
+		},
+
+		resumeGame () {
+			this.$router.push({
+				name: "game",
+			});
+		},
+
+		onLevelSelected (data) {
+			this.startNewGame(data.level);
+		},
+	},
 };
 </script>
 
 <style lang="scss">
-@import "~scss-mixins-functions-variables/scss/reset/list/reset-list-mixins";
+// @import "~scss-mixins-functions-variables/scss/typography/font-weight-variables";
+// @import "../../scss/typography.variables";
+// @import "../../scss/spacing.variables";
 
-.page--home {
-  text-align: center;
-}
+// .hdln {
+// 	font-weight: $typography-weight-light;
+// 	margin-bottom: 0;
+// 	margin-top: 0;
+// 	text-transform: lowercase;
 
-.page-section {
-  margin: 3rem 0;
+// 	b {
+// 		color: var(--primary);
+// 		font-weight: $typography-weight-bold;
+// 		text-transform: uppercase;
+// 	}
 
-  &__hdln {
-    text-transform: capitalize;
-  }
-}
+// 	&--page {
+// 		@include typo("larger-4");
+// 		margin-bottom: $spacing-level-4;
+// 		margin-top: $spacing-level-8;
 
-.levels-list {
-  @include reset-list;
+// 		b {
+// 			@include typo("larger-5");
+// 		}
+// 	}
 
-  display: inline-grid;
-  grid-gap: 1rem;
-  grid-template-columns: repeat(2, 1fr);
-}
+// 	&--section {
+// 		@include typo("larger-3");
+// 		margin-bottom: $spacing-level-2;
+// 		margin-top: $spacing-level-6;
+// 	}
+// }
+
+// .page {
+// 	&--home {
+// 		display: flex;
+// 		justify-content: center;
+// 	}
+// }
+
+// .btn {
+// 	background: var(--primary-light);
+//     color: #111;
+// 	display: inline-flex;
+//     font-weight: bold;
+// 	line-height: inherit;
+// 	padding: 0.25rem 2rem;
+// 	text-decoration: none;
+// 	text-transform: uppercase;
+// }
 </style>
