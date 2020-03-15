@@ -1,58 +1,98 @@
 <template>
-  <button class="btn" type="button">
-    <slot />
-  </button>
+	<component
+		class="btn"
+		:class="modifierClasses"
+		:is="nodeType"
+	><slot /></component>
 </template>
 
 <script>
 export default {
-  name: "Btn"
+	name: "Btn",
+
+	props: {
+		nodeType: {
+			default: 'button',
+			required: false,
+			type: String,
+		},
+
+		variant: {
+			default: '',
+			required: false,
+			type: String,
+			validator: function (value) {
+				// The value must match one of these strings
+				return ['', 'outlined', 'contained'].indexOf(value) !== -1
+			},
+		},
+
+		size: {
+			default: '',
+			required: false,
+			type: String,
+			validator: function (value) {
+				// The value must match one of these strings
+				return ['', 'full'].indexOf(value) !== -1
+			},
+		},
+	},
+
+	computed: {
+		modifierClasses() {
+			return `${this.variant ? `btn--${this.variant}` : ''} ${this.size ? `btn--${this.size}` : ''}`;
+		},
+	},
 };
 </script>
 
 <style lang="scss">
-@import "~scss-mixins-functions-variables/scss/reset/list/reset-list-mixins";
+@import "./../../scss/color.functions";
+@import "./../../scss/typography.functions";
+@import "./../../scss/layout.functions";
 
 .btn {
-  align-items: center;
-  background: none;
-  border: 0;
-  color: inherit;
-  cursor: pointer;
-  //   display: inline-flex;
-  justify-content: center;
-  text-decoration: none;
+	border: 1px solid transparent;
+	border-radius: 4px;
+	color: css-hsl(var(--primary));
+	display: inline-block;
+	font-size: typo-size("base");
+	font-weight: 600;
+	letter-spacing: 0.1ch;
+	padding: 0.5rem 1.5rem 0.75rem;
+	position: relative;
+	text-decoration: none;
+	text-transform: uppercase;
 
-  &:disabled {
-    cursor: not-allowed;
-    opacity: 0.5;
-  }
+	@include for-medium-up () {
+		font-size: typo-size("larger-1");
+		padding: 0.75rem 3rem 1rem;
+	}
 
-  &--with-switch {
-    flex-direction: column;
+	&--outlined {
+		border-color: css-hsl(var(--border-color));
 
-    [role="switch"] {
-      font-size: 0.75em;
-    }
-  }
+		&,
+		&.t-light {
+			--border-color: var(--gray-dark);
+		}
 
-  &__small {
-    font-size: 0.75rem;
-    text-transform: none;
-  }
-}
+		&.t-dark {
+			--border-color: var(--gray-light);
+		}
 
-.btn-grid {
-  @include reset-list;
+		@media (prefers-color-scheme: dark) {
+			--border-color: var(--gray-light);
+		}
+	}
 
-  display: inline-grid;
-  grid-gap: 1rem;
-  grid-template-columns: repeat(5, auto);
+	&--contained {
+		background: css-hsl(var(--primary));
+		color: css-hsla(var(--bg));
+	}
 
-  > li {
-    align-items: center;
-    display: flex;
-    justify-content: center;
-  }
+	&--full {
+		width: 100%;
+	}
 }
 </style>
