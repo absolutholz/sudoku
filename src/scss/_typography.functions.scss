@@ -1,0 +1,21 @@
+@import "./typography.variables";
+
+@function get-typo-level ($level-key, $typo-map: $typography) {
+	@return map-get($typo-map, $level-key);
+}
+
+@function typo-size ($level-key, $typo-map: $typography) {
+	$level: get-typo-level($level-key, $typo-map);
+	@return map-get($level, "size");
+}
+
+@function typo-leading ($level-key, $typo-map: $typography) {
+	$level: get-typo-level($level-key, $typo-map);
+	@return map-get($level, "line-height");
+}
+
+@mixin typo ($level-key, $typo-map: $typography) {
+	$level: get-typo-level($level-key, $typo-map);
+	font-size: typo-size($level-key, $typo-map);
+	line-height: typo-leading($level-key, $typo-map);
+}

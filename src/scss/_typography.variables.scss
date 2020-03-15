@@ -1,0 +1,65 @@
+@import "~scss-mixins-functions-variables/scss/typography/font-weight-variables";
+
+// https://grtcalculator.com/
+// Golden Scale
+// $typography-size-smaller: 0.8125rem; // 13px
+// $typography-size-base: 1rem; // 16px
+// $typography-size-larger-1: 1.25rem; // 20px
+// $typography-size-larger-2: 1.625rem; // 26px
+// $typography-size-larger-3: 2.0625rem; // 33px
+// $typography-size-larger-4: 2.625rem; // 42px
+
+// $typography-line-height-smaller: 1.5;
+// $typography-line-height-base: 1.5;
+// $typography-line-height-larger-1: 1.4;
+// $typography-line-height-larger-2: 1.3;
+// $typography-line-height-larger-3: 1.25;
+// $typography-line-height-larger-4: 1.2;
+
+$typography: (
+	smaller: (
+		size: 0.8125rem, // 13px
+		line-height: 1.5,
+	),
+	base: (
+		size: 1rem, // 16px
+		line-height: 1.5,
+	),
+	larger-1: (
+		size: 1.25rem, // 20px
+		line-height: 1.4,
+	),
+	larger-2: (
+		size: 1.625rem, // 26px
+		line-height: 1.3,
+	),
+	larger-3: (
+		size: 2.0625rem, // 33px
+		line-height: 1.25,
+	),
+	larger-4: (
+		size: 2.625rem, // 42px
+		line-height: 1.2,
+	),
+	larger-5: (
+		size: 3.375rem, // 54px
+		line-height: 1.15,
+	),
+);
+
+// // https://practicaltypography.com/letterspacing.html
+// // https://medium.com/better-web-type/rhythm-in-web-typography-48800180ad90
+// $typography-letter-spacing-smaller: inherit;
+// $typography-letter-spacing-base: inherit;
+// $typography-letter-spacing-larger-1: inherit;
+// $typography-letter-spacing-larger-2: inherit;
+// $typography-letter-spacing-larger-3: inherit;
+// $typography-letter-spacing-larger-4: inherit;
+
+// // https://www.kevinpowell.co/article/typographic-scale/
+// $typography-size-smaller: 0.875rem; // 14
+// $typography-size-base: 1rem; // 16
+// $typography-size-larger-1: 1.125rem; // 18
+// $typography-size-larger-2: 1.5rem; // 24
+// $typography-size-larger-3: 1.875rem; // 30
+// $typography-size-larger-4: 2.25rem; // 36
