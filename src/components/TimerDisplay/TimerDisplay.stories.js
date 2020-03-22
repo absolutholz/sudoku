@@ -6,7 +6,7 @@ const components = { TimerDisplay };
 const template = '<timer-display :seconds="seconds" />';
 
 export default {
-	title: 'Molecules|Timer Display',
+	title: 'Atoms|Timer Display',
 	decorators: [withKnobs],
 };
 
