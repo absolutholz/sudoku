@@ -1,12 +1,14 @@
 <template>
 	<main>
 		<div class="l-container">
-			<h1 class="hdln hdln--page">Settings</h1>
+			<hdln nodeType="h1" variant="page">Settings</hdln>
 
 			<nav>
 				<router-link to="/">Back to Home</router-link>
 				<router-link to="/game" v-if="$store.state.puzzle.length">Back to Game</router-link>
 			</nav>
+
+			<hdln nodeType="h2" variant="sector">Gameplay</hdln>
 
 			<form @submit.prevent="handleSubmit">
 				<label
@@ -60,18 +62,75 @@
 					</div>
 				</label>
 			</form>
+
+			<hdln nodeType="h2" variant="sector">Appearance</hdln>
+
+			<form @submit.prevent="handleSubmit">
+				<label
+					class="input-group"
+					for="settings-peer-cells"
+				>
+					<div class="input-group__control">
+						<switch-button
+							id="settings-peer-cells"
+							@onToggled="setDarkModeState"
+							:state="$store.state.darkMode"
+						/>
+					</div>
+					<div class="input-group__label">
+						<div class="input__label">Dark Mode</div>
+					</div>
+				</label>
+
+				<fieldset>
+					<legend>Color Theme</legend>
+
+					<ul class="btn-list">
+						<li v-for="(name, color) in themes" :key="`theme-${ color }`">
+							<label
+								class="btn btn--outlined btn--theme"
+								:class="`t-${color}`"
+								:for="`settings-theme-${ color }`"
+							>
+								<input
+									:id="`settings-theme-${ color }`"
+									:checked="$store.state.theme = color"
+									name="settings-theme"
+									@input="setTheme(color)"
+									type="radio"
+									:value="color"
+								/>
+								{{ name }}
+							</label>
+						</li>
+					</ul>
+				</fieldset>
+			</form>
 		</div>
 	</main>
 </template>
 
 <script>
+import Hdln from './../../components/Headline';
 import SwitchButton from './../../components/SwitchButton';
 
 export default {
 	name: 'SettingsPage',
 
 	components: {
+		Hdln,
 		SwitchButton,
+	},
+
+	data() {
+		return {
+			themes: {
+				'purple': 'Purple',
+				'green': 'Green',
+				'red': 'Red',
+				'blue': 'Blue',
+			},
+		};
 	},
 
 	methods: {
@@ -87,9 +146,26 @@ export default {
 			this.$store.commit('setDisplayErrors', { desiredState: data.stateDesired });
 		},
 
-		handleSubmit () {
-
+		setDarkModeState (data) {
+			const rootClassList = document.querySelector(':root').classList;
+			if (data.stateDesired) {
+				rootClassList.remove('t-light');
+				rootClassList.add('t-dark');
+			} else {
+				rootClassList.remove('t-dark');
+				rootClassList.add('t-light');
+			}
+			this.$store.commit('setDarkMode', { desiredState: data.stateDesired });
 		},
+
+		setTheme (theme) {
+			const rootClassList = document.querySelector(':root').classList;
+			rootClassList.remove(`t-${ this.$store.state.theme }`);
+			rootClassList.add(`t-${ theme }`);
+			this.$store.commit('setTheme', { theme });
+		},
+
+		handleSubmit () {},
 	},
 };
 </script>
