@@ -16,6 +16,8 @@ const store = new Vuex.Store({
 		displayErrors: true,
 		isPaused: true,
 		isComplete: false,
+		darkMode: false,
+		theme: 'purple',
 	},
 
 	mutations: {
@@ -89,6 +91,14 @@ const store = new Vuex.Store({
 
 		setCompletedState (state, { isComplete = true } = {}) {
 			state.isComplete = isComplete;
+		},
+
+		setDarkMode (state, { desiredState = true } = {}) {
+			state.darkMode = !!desiredState;
+		},
+
+		setTheme (state, { theme }) {
+			state.theme = theme;
 		},
 	},
 
