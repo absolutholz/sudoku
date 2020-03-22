@@ -2,6 +2,7 @@
 	<component
 		class="btn"
 		:class="modifierClasses"
+		@click="onClick"
 		:is="nodeType"
 	><slot /></component>
 </template>
@@ -41,6 +42,13 @@ export default {
 	computed: {
 		modifierClasses() {
 			return `${this.variant ? `btn--${this.variant}` : ''} ${this.size ? `btn--${this.size}` : ''}`;
+		},
+	},
+
+	methods: {
+		onClick () {
+			console.log('level');
+			this.$emit('click');
 		},
 	},
 };
@@ -88,11 +96,33 @@ export default {
 
 	&--contained {
 		background: css-hsl(var(--primary));
-		color: css-hsla(var(--bg));
+		color: css-hsl(var(--bg));
 	}
 
 	&--full {
 		width: 100%;
+	}
+
+	&--theme {
+		border-color: inherit;
+
+		input {
+			display: none;
+		}
+	}
+}
+
+@import "~scss-mixins-functions-variables/scss/reset/list/reset-list-mixins";
+
+.btn-list {
+	@include reset-list;
+
+	display: flex;
+	flex-wrap: wrap;
+	margin: -0.5rem;
+
+	> li {
+		margin: 0.5rem;
 	}
 }
 </style>
