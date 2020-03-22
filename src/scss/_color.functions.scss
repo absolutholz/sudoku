@@ -28,8 +28,8 @@ $num: 0;
 	@return unquote("hsl(#{$hsl})");
 }
 
-@function css-hsla($hsla){
-	@return unquote("hsla(#{$hsla})");
+@function css-hsla($hsla, $alpha){
+	@return unquote("hsla(#{$hsla}, #{$alpha})");
 }
 
 // https://www.w3schools.com/colors/colors_converter.asp
