@@ -5,7 +5,7 @@ import { contexts } from '../../../.storybook/configs/contexts';
 import Hdln from './';
 
 export default {
-	title: 'Atoms|Headline',
+	title: 'Atoms|Headlines',
 	decorators: [
 		withKnobs(),
 		withContexts(contexts)

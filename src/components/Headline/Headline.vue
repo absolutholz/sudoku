@@ -52,12 +52,12 @@ export default {
 	}
 
 	&::after {
-		background: css-hsla(var(--primary));
+		background: css-hsl(var(--primary));
 		content: "";
 		display: block;
 		height: 0.25rem;
-		margin-top: 0.25rem;
-		width: 10rem;
+		margin-top: 0.5rem;
+		width: 2.5em;
 	}
 
 	&--page {
