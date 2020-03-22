@@ -71,8 +71,8 @@ export default {
 		background: css-hsl(var(--gray-light));
 		border-radius: 50%;
 		box-shadow:
-			0 0 2px 0 css-hsla((var(--color), 0.12)),
-			0 2px 2px 0 css-hsla((var(--color), 0.24));
+			0 0 2px 0 css-hsla(var(--color), 0.12),
+			0 2px 2px 0 css-hsla(var(--color), 0.24);
 		// box-shadow: var(--shadow-1), var(--shadow-2);
 		content: "";
 		display: block;
@@ -88,36 +88,13 @@ export default {
 	&[aria-checked="true"] {
 		&::before {
 			// background: transparentize(#2a2a2b, 0.5);
-			background: css-hsla(var(--primary-dark));
+			background: css-hsl(var(--primary-dark));
 		}
 
 		&::after {
-			background: css-hsla(var(--primary));
+			background: css-hsl(var(--primary));
 			left: calc(100% - 1em);
 		}
 	}
 }
-
-// .switch {
-// 	font-size: 1.5rem;
-
-// 	&::before {
-// 		background: var(--color);
-// 		border-radius: 9em;
-// 		content: "";
-// 		display: block;
-// 		height: 1em;
-// 		opacity: 0.5;
-// 		width: 1.5em;
-// 	}
-
-// 	&::after {
-// 		border-radius: 50%;
-// 		content: "";
-// 		display: block;
-// 		font-size: 1.167em;
-// 		height: 1em;
-// 		width: 1em;
-// 	}
-// }
 </style>
