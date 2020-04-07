@@ -25,7 +25,6 @@ export default {
 
 	methods: {
 		onLevelSelection (level) {
-			console.log(level);
 			this.$emit('levelSelection', { level });
 		},
 	},

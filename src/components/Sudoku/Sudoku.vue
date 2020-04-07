@@ -288,7 +288,6 @@ export default {
 		},
 
 		setCellValue(value) {
-			console.log(value);
 			if (this.isActiveCellLocked) {
 				return;
 			}
@@ -311,7 +310,6 @@ export default {
 		},
 
 		setCellNote(value) {
-			console.log(value);
 			if (this.isActiveCellLocked) {
 				return;
 			}
