@@ -1,6 +1,6 @@
 <template>
 	<!-- y value is just eyeballed for the used text -->
-	<svg viewBox="0 1 16 16" width="100%" preserveAspectRatio="xMinYMin">
+	<svg class="cell-number" preserveAspectRatio="xMinYMin" viewBox="0 -0.5 16 16" width="100%">
 		<text x="50%" y="50%"><slot></slot></text>
 	</svg>
 </template>
@@ -12,11 +12,13 @@ export default {
 </script>
 
 <style lang="scss">
-svg text {
-	alignment-baseline: central;
-    dominant-baseline: central;
-	fill: currentColor;
-    font-size: 0.8rem;
-	text-anchor: middle;
+.cell-number {
+	text {
+		alignment-baseline: central;
+		dominant-baseline: central;
+		fill: currentColor;
+		font-size: 0.5em;
+		text-anchor: middle;
+	}
 }
 </style>

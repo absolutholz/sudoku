@@ -1,14 +1,14 @@
 <template>
 	<main>
+		<nav class="site-head site-head--portrait">
+			<div class="site-head__location">
+				<a @click="$router.go(-1)"><svg-arrow-left aria-label="Back" class="icon" /></a>
+			</div>
+		</nav>
 		<div class="l-container">
 			<hdln nodeType="h1" variant="page">Settings</hdln>
 
-			<nav>
-				<router-link to="/">Back to Home</router-link>
-				<router-link to="/game" v-if="$store.state.puzzle.length">Back to Game</router-link>
-			</nav>
-
-			<hdln nodeType="h2" variant="sector">Gameplay</hdln>
+			<hdln id="gameplay" nodeType="h2" variant="sector">Gameplay</hdln>
 
 			<form @submit.prevent="handleSubmit">
 				<label
@@ -63,7 +63,7 @@
 				</label>
 			</form>
 
-			<hdln nodeType="h2" variant="sector">Appearance</hdln>
+			<hdln id="appearance" nodeType="h2" variant="sector">Appearance</hdln>
 
 			<form @submit.prevent="handleSubmit">
 				<label
@@ -114,12 +114,15 @@
 import Hdln from './../../components/Headline';
 import SwitchButton from './../../components/SwitchButton';
 
+import SvgArrowLeft from '@mdi/svg/svg/arrow-left.svg';
+
 export default {
 	name: 'SettingsPage',
 
 	components: {
 		Hdln,
 		SwitchButton,
+		SvgArrowLeft,
 	},
 
 	data() {
@@ -147,15 +150,10 @@ export default {
 		},
 
 		setDarkModeState (data) {
-			const rootClassList = document.querySelector(':root').classList;
-			if (data.stateDesired) {
-				rootClassList.remove('t-light');
-				rootClassList.add('t-dark');
-			} else {
-				rootClassList.remove('t-dark');
-				rootClassList.add('t-light');
-			}
-			this.$store.commit('setDarkMode', { desiredState: data.stateDesired });
+			// this.$store.commit('setDarkMode', { desiredState: data.stateDesired });
+			this.$store.dispatch('setDarkMode', {
+				stateDesired: data.stateDesired,
+			});
 		},
 
 		setTheme (theme) {

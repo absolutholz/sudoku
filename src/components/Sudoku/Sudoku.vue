@@ -1,14 +1,32 @@
 <template>
-	<div>
-		<div class="sudoku-gameboard">
+	<div class="l-game">
+		<nav class="site-head site-head--portrait">
+			<div class="site-head__location">
+				<router-link to="/"><svg-home aria-label="Home" class="icon" /></router-link>
+			</div>
 
-			<div
-				class="sudoku-overlay"
+			<div class="site-head__settings">
+				<router-link to="/settings"><svg-cog aria-label="Settings" class="icon" /></router-link>
+			</div>
+		</nav>
+
+		<div class="l-game__board sudoku-gameboard">
+
+			<game-overlay
 				@click="resumeGame"
-				v-if="$store.state.isPaused"
+				variant="game-paused"
+				v-if="$store.state.isPaused && !isGameComplete()"
 			>
 				<svg-pause class="icon" />
-			</div>
+			</game-overlay>
+
+			<game-overlay
+				variant="game-over"
+				v-if="isGameComplete()"
+			>
+				<div>You won!</div>
+				<btn variant="contained" @click="startNewGame()">New {{ difficultyLevel }} Game</btn>
+			</game-overlay>
 
 			<ol class="sudoku-grid">
 				<li
@@ -17,7 +35,9 @@
 				>
 					<ol class="sudoku-subgrid">
 						<li
-							v-for="(cell, cellIndex) in subgrid" :key="`cell-${ cellIndex }`">
+							class="sudoku-cell"
+							v-for="(cell, cellIndex) in subgrid" :key="`cell-${ cellIndex }`"
+						>
 							<sudoku-cell
 								:activeDigit="activeValue"
 								@active="setCellActive"
@@ -32,7 +52,7 @@
 								:digit="cell.value"
 								:notes="cell.notes"
 							>
-								<template>{{ cell.value }}</template>
+								<template><cell-number>{{ cell.value }}</cell-number></template>
 							</sudoku-cell>
 						</li>
 					</ol>
@@ -40,63 +60,112 @@
 			</ol>
 		</div>
 
-		<div class="sudoku-controls">
-			<div class="sudoku-controls__section--cell-controls">
-				<ol class="btn-grid">
-					<li
-						v-for="value in Array(9).keys()"
-						:key="`entry-${value}`"
-					>
-						<sudoku-digit-button
-							:disabled="isActiveCellLocked"
-							@interact="isNotesMode ? setCellNote(value + 1) : setCellValue(value + 1)"
-						>{{ value + 1 }}</sudoku-digit-button>
-					</li>
-					<li>
-						<sudoku-icon-button
-							:disabled="isActiveCellLocked"
-							@interact="clearCell"
-						><template #icon><svg-eraser class="icon" /></template>Erase</sudoku-icon-button>
-					</li>
-				</ol>
-			</div>
+		<div class="l-game__controls">
+			<nav class="site-head site-head--landscape">
+				<div class="site-head__location">
+					<router-link to="/"><svg-home aria-label="Home" class="icon" /></router-link>
+				</div>
 
-			<div class="sudoku-controls__section--board-controls">
-				<label
-					class="btn btn--with-switch"
-					for="note-switch-button"
-					@mousedown.prevent="toggleNotesMode"
-				>
-					<switch-button
-						id="note-switch-button"
-						:state="isNotesMode"
-					/>
-					<span>Notes</span>
-				</label>
+				<div class="site-head__settings">
+					<router-link to="/settings"><svg-cog aria-label="Settings" class="icon" /></router-link>
+				</div>
+			</nav>
+
+			<div>
+				<div class="sudoku-meta">
+					<span>{{ difficultyLevel }}</span>
+					<div>
+						<timer-display :seconds="$store.state.seconds" />
+						<button aria-title="Pause game" @click="pauseGame"><svg-pause class="icon" /></button>
+						<button aria-title="Restart game" @click="restartGame"><svg-restart class="icon" /></button>
+					</div>
+				</div>
+
+				<div class="sudoku-controls">
+						<ol class="cell-controls">
+							<li
+								v-for="value in Array(9).keys()"
+								:key="`entry-${value}`"
+							>
+								<sudoku-digit-button
+									:disabled="isActiveCellLocked"
+									@interact="isNotesMode ? setCellNote(value + 1) : setCellValue(value + 1)"
+								>{{ value + 1 }}</sudoku-digit-button>
+							</li>
+							<li class="cell-controls__span">
+								<sudoku-icon-button
+									:disabled="isActiveCellLocked"
+									@interact="clearCell"
+								><template #icon><svg-eraser class="icon" /></template>Erase</sudoku-icon-button>
+							</li>
+						</ol>
+
+						<label
+							class="btn btn--with-switch"
+							for="note-switch-button"
+							@mousedown.prevent="toggleNotesMode"
+						>
+							<switch-button
+								id="note-switch-button"
+								:state="isNotesMode"
+							/>
+							<span>Notes</span>
+						</label>
+
+						<!-- <label
+							class="btn btn--with-switch"
+							for="num-lock-switch-button"
+							@mousedown.prevent="toggleNumLockMode"
+						>
+							<switch-button
+								id="num-lock-switch-button"
+								:state="isNumLockMode"
+							/>
+							<span>Num lock</span>
+						</label> -->
+				</div>
 			</div>
 		</div>
 	</div>
 </template>
 
 <script>
+import difficultyLevels from './../../difficulty-levels';
+
 import SudokuCell from './../SudokuCell';
 import SudokuDigitButton from './../SudokuDigitButton';
 import SudokuIconButton from './../SudokuIconButton';
 import SwitchButton from './../SwitchButton';
+import CellNumber from './../CellNumber';
+import TimerDisplay from './../../components/TimerDisplay';
+import Btn from './../../components/Btn';
+import GameOverlay from './../../components/GameOverlay';
 
 import SvgEraser from '@mdi/svg/svg/eraser.svg';
 import SvgPause from '@mdi/svg/svg/pause.svg';
+import SvgRestart from '@mdi/svg/svg/restart.svg';
+import SvgHome from '@mdi/svg/svg/home.svg';
+import SvgCog from '@mdi/svg/svg/cog.svg';
+// import SvgBrush from '@mdi/svg/svg/brush.svg';
 
 export default {
 	name: 'Sudoku',
 
 	components: {
+		Btn,
+		GameOverlay,
 		SudokuCell,
 		SudokuDigitButton,
 		SudokuIconButton,
 		SwitchButton,
+		TimerDisplay,
+		CellNumber,
 		SvgEraser,
 		SvgPause,
+		SvgRestart,
+		SvgHome,
+		SvgCog,
+		// SvgBrush,
 	},
 
 	data() {
@@ -106,11 +175,16 @@ export default {
 			activeCol: -1,
 			activeValue: -1,
 			isNotesMode: false,
+			isNumLockMode: false,
 			activeIsOriginal: false,
 		};
 	},
 
 	computed: {
+		difficultyLevel () {
+			return difficultyLevels[this.$store.state.difficulty];
+		},
+
 		cells() {
 			const cells = Array(81);
 
@@ -155,12 +229,44 @@ export default {
 	},
 
 	methods: {
+		pauseGame() {
+			this.$store.dispatch('pauseGame');
+		},
+
 		resumeGame () {
 			this.$store.dispatch('resumeGame');
 		},
 
+		startNewGame () {
+			this.$store.commit("generatePuzzle", { difficulty: this.$store.state.difficulty });
+			this.$store.dispatch("startGame");
+		},
+
+		restartGame() {
+			this.$store.state.puzzle.forEach(row => {
+				row.forEach(cell => {
+					if (!cell.original) {
+						this.$store.commit('clearCellNotes', {
+							row: cell.row,
+							col: cell.col,
+						});
+
+						this.$store.commit('clearCellValue', {
+							row: cell.row,
+							col: cell.col,
+						});
+					}
+				});
+			});
+			this.$store.dispatch('startGame');
+		},
+
 		toggleNotesMode() {
 			this.isNotesMode = !this.isNotesMode;
+		},
+
+		toggleNumLockMode() {
+			this.isNumLockMode = !this.isNumLockMode;
 		},
 
 		setCellActive(row, col, subgrid, value, original) {
@@ -296,40 +402,95 @@ export default {
 
 <style lang="scss">
 @import "~scss-mixins-functions-variables/scss/reset/list/reset-list-mixins";
+@import "./../../scss/color.functions";
 
-.sudoku-gameboard {
-	position: relative;
-}
+$spacing: 2vw;
 
-.sudoku-overlay {
-	align-items: center;
-	bottom: 0;
+.site-head {
 	display: flex;
-	justify-content: center;
-	left: 0;
-	position: absolute;
-	right: 0;
-	top: 0;
-	z-index: 1;
+	justify-content: space-between;
+	width: 100%;
 
-	&::before {
-		backdrop-filter: blur(0.25em);
-		background: unquote("hsl(var(--bg-hue), var(--bg-sat), var(--bg-lum), 0.5)");
-		bottom: 0;
-		content: "";
-		left: 0;
-		position: absolute;
-		right: 0;
-		top: 0;
+	a {
+		color: inherit;
+		display: inline-block;
 	}
 
 	.icon {
-		font-size: 6rem;
-		z-index: 1;
+		font-size: 2.5rem;
+		padding: 0.25em;
+	}
+
+	&--landscape {
+		border-bottom: 1px solid;
+		margin: 1vw 0;
+
+		@media (orientation: portrait) {
+			display: none;
+		}
+	}
+
+	&--portrait {
+		margin: $spacing;
+
+		@media (orientation: landscape) {
+			display: none;
+		}
 	}
 }
 
+.l-game {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+
+	&__board {
+		margin: $spacing;
+		max-width: calc(100vh - #{ $spacing * 2 });
+		width: 100%;
+	}
+
+	&__controls {
+		flex-grow: 1;
+		padding: $spacing;
+
+		@media (orientation: landscape) {
+			padding-bottom: 0;
+			padding-top: 0;
+			max-width: 20rem;
+		}
+	}
+}
+
+.cell-controls {
+	@include reset-list;
+
+    display: grid;
+    grid-gap: 1rem;
+	grid-template-columns: repeat(3, 1fr);
+
+	> li,
+	.btn {
+		text-align: center;
+		width: 100%;
+	}
+
+	&__span {
+		grid-column: 1 / span 3;
+	}
+}
+
+
+.sudoku-gameboard {
+	font-size: 1.5em;
+	position: relative;
+}
+
 .sudoku-controls {
+	@media (min-height: 800px) {
+		font-size: 2rem;
+	}
+
 	&__section {
 		display: flex;
 		justify-content: center;
@@ -348,52 +509,221 @@ export default {
 	}
 }
 
-.sudoku-grid {
-	@include reset-list;
-
-	display: grid;
-	grid-gap: 2px;
-	grid-template-columns: repeat(3, 1fr);
-	position: relative;
-	z-index: 0;
-
-	&::before {
-		background: var(--typo);
-		bottom: 0;
-		content: "";
-		left: 0;
-		opacity: 0.65;
-		position: absolute;
-		right: 0;
-		top: 0;
-		z-index: -1;
-	}
+.sudoku-meta {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	margin-bottom: 1rem;
 }
 
+// .sudoku-grid {
+// 	@include reset-list;
+
+// 	display: grid;
+// 	grid-gap: 2px;
+// 	grid-template-columns: repeat(3, 1fr);
+// 	position: relative;
+// 	z-index: 0;
+
+// 	&::before {
+// 		background: var(--typo);
+// 		bottom: 0;
+// 		content: "";
+// 		left: 0;
+// 		opacity: 0.65;
+// 		position: absolute;
+// 		right: 0;
+// 		top: 0;
+// 		z-index: -1;
+// 	}
+// }
+
+// .sudoku-subgrid {
+// 	@include reset-list;
+
+// 	background: var(--bg);
+// 	display: grid;
+// 	grid-gap: 1px;
+// 	grid-template-columns: repeat(3, 1fr);
+// 	position: relative;
+
+// 	&::before {
+// 		background: var(--typo);
+// 		bottom: 0;
+// 		content: "";
+// 		left: 0;
+// 		opacity: 0.25;
+// 		position: absolute;
+// 		right: 0;
+// 		top: 0;
+// 	}
+
+// 	> * {
+// 		background: white;
+// 		padding-bottom: 100%;
+// 		position: relative;
+// 	}
+// }
+
+.sudoku-grid,
 .sudoku-subgrid {
 	@include reset-list;
 
-	background: var(--bg);
 	display: grid;
-	grid-gap: 1px;
 	grid-template-columns: repeat(3, 1fr);
+}
+
+.sudoku-grid {
+	$border-width: 3px;
+
+	grid-gap: $border-width;
+
+	> li {
+		&:not(:nth-child(3n)) {
+			position: relative;
+
+			&::before {
+				border-left: $border-width solid css-hsla(var(--color), 0.5);
+				content: "";
+				display: block;
+				height: 100%;
+				left: 100%;
+				position: absolute;
+				top: 0;
+				width: $border-width;
+			}
+		}
+
+		&:not(:nth-last-child(-n + 3)) {
+			position: relative;
+
+			&::after {
+				border-bottom: $border-width solid css-hsla(var(--color), 0.5);
+				content: "";
+				display: block;
+				height: $border-width;
+				left: 0;
+				position: absolute;
+				top: 100%;
+				width: 100%;
+			}
+		}
+
+		// &:nth-child(3n - 1),
+		// &:nth-child(3n - 2) {
+		// 	&::before {
+		// 		border-left: 1px solid;
+		// 		content: "";
+		// 		display: block;
+		// 		height: 100%;
+		// 		right: 0;
+		// 		position: absolute;
+		// 		top: 0;
+		// 	}
+		// }
+	}
+
+	// &:nth-child(-n + 3),
+	// &:nth-child(-n + 6) {
+	// 	background: blue;
+	// }
+
+
+	// border: 1px solid css-hsla(var(--color), 0.65);
+
+	// > li {
+	// 	border: inherit;
+	// }
+
+	// $percentage: 100% / 9;
+	// background: repeating-linear-gradient(to right, transparent, transparent calc(#{$percentage} - 1px), white calc(#{$percentage} - 1px), transparent $percentage),
+	// 	repeating-linear-gradient(to bottom, transparent, transparent calc(#{$percentage} - 1px), white calc(#{$percentage} - 1px), transparent $percentage);
+}
+
+.sudoku-subgrid {
+	// border: 3px solid transparent;
+
+	// &:nth-child(3n - 1),
+	// &:nth-child(3n - 2) {
+	// 	border-right-color: css-hsla(var(--color), 0.65);
+	// }
+
+	// &:nth-child(-n + 3),
+	// &:nth-child(-n + 6) {
+	// 	border-bottom-color: css-hsla(var(--color), 0.65);
+	// }
+
+	$border-width: 1px;
+
+	grid-gap: $border-width;
+
+	> li {
+
+		&:not(:nth-child(3n)) {
+			position: relative;
+
+			&::before {
+				border-left: $border-width solid css-hsla(var(--color), 0.75);
+				content: "";
+				display: block;
+				height: 100%;
+				left: 100%;
+				position: absolute;
+				top: 0;
+				width: $border-width;
+			}
+		}
+
+		&:not(:nth-last-child(-n + 3)) {
+			position: relative;
+
+			&::after {
+				border-bottom: $border-width solid css-hsla(var(--color), 0.75);
+				content: "";
+				display: block;
+				height: $border-width;
+				left: 0;
+				position: absolute;
+				top: 100%;
+				width: 100%;
+			}
+		}
+
+		// border: 0 solid css-hsla(var(--color), 0.45);
+
+		// &:nth-child(3n - 1),
+		// &:nth-child(3n - 2) {
+		// 	border-right-width: 1px;
+		// }
+
+		// &:nth-child(-n + 3),
+		// &:nth-child(-n + 6) {
+		// 	border-bottom-width: 1px;
+		// }
+	}
+}
+
+.sudoku-cell {
+	// border: 1px solid transparent;
+	padding-bottom: 100%;
 	position: relative;
 
-	&::before {
-		background: var(--typo);
-		bottom: 0;
-		content: "";
-		left: 0;
-		opacity: 0.25;
-		position: absolute;
-		right: 0;
-		top: 0;
-	}
+	// &:nth-child(3n - 1),
+	// &:nth-child(3n - 2) {
+	// 	border-right-color: css-hsla(var(--color), 0.45);
+	// }
 
-	> * {
-		background: white;
-		padding-bottom: 100%;
-		position: relative;
-	}
+	// &:nth-child(-n + 3),
+	// &:nth-child(-n + 6) {
+	// 	border-bottom-color: css-hsla(var(--color), 0.45);
+	// }
+
+	// > * {
+	// 	height: 100%;
+	// 	left: 0;
+	// 	position: absolute;
+	// 	top: 0;
+	// 	width: 100%;
+	// }
 }
 </style>

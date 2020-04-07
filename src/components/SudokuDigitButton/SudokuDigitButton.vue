@@ -1,13 +1,20 @@
 <template>
-	<button
-		class="btn btn--digit"
+	<btn
+		class="btn--digit"
 		@click="onInteract"
-	><slot /></button>
+		variant="outlined"
+	><slot /></btn>
 </template>
 
 <script>
+import Btn from './../Btn';
+
 export default {
 	name: 'SudokuDigitButton',
+
+	components: {
+		Btn,
+	},
 
 	methods: {
 		onInteract () {
@@ -19,8 +26,7 @@ export default {
 
 <style lang="scss">
 .btn--digit {
-	font: 2rem / 1 "Rubik", sans-serif;
-	min-height: 1.5em;
-	min-width: 1.5em;
+	font: 1em / 1 "Rubik", sans-serif;
+	padding: 0.5rem 0;
 }
 </style>

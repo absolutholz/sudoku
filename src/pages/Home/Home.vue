@@ -6,10 +6,10 @@
 
 		<section class="section" v-if="$store.state.puzzle.length">
 			<div class="l-container">
-				<hdln nodeType="h2" variant="sector"><b>Current</b> game</hdln>
+				<hdln nodeType="h2" variant="sector"><b>Current</b> Game</hdln>
 
 				<div>
-					<btn variant="outlined" @click="resumeGame()">Resume</btn>
+					<btn variant="contained" @click="resumeGame()">Resume</btn>
 				</div>
 			</div>
 		</section>

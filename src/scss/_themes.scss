@@ -50,20 +50,44 @@
 	--gray-light: #{get-hsl-string($color-map-gray-scale, 300)};
 	--gray-light-darker: #{get-hsl-string($color-map-gray-scale, 200)};
 
+	transition-property: background, color;
+	transition-duration: 350ms;
+
 	&,
 	&.t-light {
-		--bg: var(--base-light);
 		--color: var(--base-dark);
+		--color-offset-1: var(--gray-dark-darker);
+		--color-offset-2: var(--gray-dark);
+		--color-offset-3: var(--gray-dark-lighter);
+
+		--bg: var(--base-light);
+		--bg-offset-1: var(--gray-light-lighter);
+		--bg-offset-2: var(--gray-light);
+		--bg-offset-3: var(--gray-light-darker);
 	}
 
 	&.t-dark {
-		--bg: var(--base-dark);
 		--color: var(--base-light);
+		--color-offset-1: var(--gray-light-lighter);
+		--color-offset-2: var(--gray-light);
+		--color-offset-3: var(--gray-light-darker);
+
+		--bg: var(--base-dark);
+		--bg-offset-1: var(--gray-dark-darker);
+		--bg-offset-2: var(--gray-dark);
+		--bg-offset-3: var(--gray-dark-lighter);
 	}
 
 	@media (prefers-color-scheme: dark) {
-		--bg: var(--base-dark);
 		--color: var(--base-light);
+		--color-offset-1: var(--gray-light-lighter);
+		--color-offset-2: var(--gray-light);
+		--color-offset-3: var(--gray-light-darker);
+
+		--bg: var(--base-dark);
+		--bg-offset-1: var(--gray-dark-darker);
+		--bg-offset-2: var(--gray-dark);
+		--bg-offset-3: var(--gray-dark-lighter);
 	}
 
 	@include theme-dark(
@@ -90,6 +114,20 @@
 		get-hsl-string($color-map-blue, 600),
 		get-hsl-string($color-map-blue, 700),
 		get-hsl-string($color-map-blue, 500),
+	);
+}
+
+.t-purple {
+	@include theme-dark(
+		get-hsl-string($color-map-purple, 300),
+		get-hsl-string($color-map-purple, 400),
+		get-hsl-string($color-map-purple, 200),
+	);
+
+	@include theme-light(
+		get-hsl-string($color-map-purple, 600),
+		get-hsl-string($color-map-purple, 700),
+		get-hsl-string($color-map-purple, 500),
 	);
 }
 

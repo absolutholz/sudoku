@@ -47,7 +47,6 @@ export default {
 
 	methods: {
 		onClick () {
-			console.log('level');
 			this.$emit('click');
 		},
 	},
@@ -62,7 +61,7 @@ export default {
 .btn {
 	border: 1px solid transparent;
 	border-radius: 4px;
-	color: css-hsl(var(--primary));
+	color: css-hsl(var(--color));
 	display: inline-block;
 	font-size: typo-size("base");
 	font-weight: 600;
@@ -73,7 +72,7 @@ export default {
 	text-transform: uppercase;
 
 	@include for-medium-up () {
-		font-size: typo-size("larger-1");
+		// font-size: typo-size("larger-1");
 		padding: 0.75rem 3rem 1rem;
 	}
 
@@ -109,6 +108,11 @@ export default {
 		input {
 			display: none;
 		}
+	}
+
+	&[disabled] {
+		opacity: 0.25;
+		background: css-hsl(var(--bg-offset-3));
 	}
 }
 

@@ -18,7 +18,7 @@
 		>
 			<slot>{{ digit }}</slot>
 		</button>
-		<notes
+		<cell-notes
 			:activeDigit="activeDigit"
 			:notes="notes"
 			v-if="hasNotes"
@@ -27,13 +27,13 @@
 </template>
 
 <script>
-import Notes from './../../components/Notes';
+import CellNotes from './../../components/CellNotes';
 
 export default {
 	name: 'SudokuCell',
 
 	components: {
-		Notes,
+		CellNotes,
 	},
 
 	props: {
@@ -107,28 +107,30 @@ export default {
 	},
 
 	mounted: function () {
-		const elGrid = this.$el.closest('.sudoku-grid');
-		if (elGrid) {
-			elGrid.style.fontSize = `${this.$el.offsetHeight * 0.6 / 16}rem`;
-		}
+		// const elGrid = this.$el.closest('.sudoku-grid');
+		// if (elGrid) {
+		// 	elGrid.style.fontSize = `${this.$el.offsetHeight * 0.6 / 16}rem`;
+		// }
 	},
 };
 </script>
 
 <style lang="scss">
 @import "~scss-mixins-functions-variables/scss/typography/font-weight-variables";
+@import "./../../scss/color.functions";
 
 .cell {
-	--cell-bg-hue: var(--highlight-hue);
-	--cell-bg-sat: var(--highlight-sat);
-	--cell-bg-lum: 100%;
-	--cell-bg-alpha: 1;
+	// --cell-bg-hue: var(--highlight-hue);
+	// --cell-bg-sat: var(--highlight-sat);
+	// --cell-bg-lum: 100%;
+	// --cell-bg-alpha: 1;
 
-	// https://github.com/sass/sass/issues/469
-	background: unquote("hsl(var(--cell-bg-hue), var(--cell-bg-sat), var(--cell-bg-lum), var(--cell-bg-alpha))");
-	// color: unquote("hsl(var(--highlight-hue), var(--highlight-sat), var(--highlight-lum))");
+	// // https://github.com/sass/sass/issues/469
+	// background: unquote("hsl(var(--cell-bg-hue), var(--cell-bg-sat), var(--cell-bg-lum), var(--cell-bg-alpha))");
+	// // color: unquote("hsl(var(--highlight-hue), var(--highlight-sat), var(--highlight-lum))");
+	color: css-hsl(var(--color));
 	font-family: Rubik, sans-serif;
-	font-weight: $typography-weight-light;
+	font-weight: $typography-weight-medium;
 	height: 100%;
 	line-height: 1;
 	left: 0;
@@ -152,37 +154,47 @@ export default {
 	}
 
 	&--original {
-		--cell-bg-alpha: 0.03;
-		--cell-bg-lum: 0%;
-		color: var(--typo);
+		// --cell-bg-alpha: 0.03;
+		// --cell-bg-lum: 0%;
+		// color: var(--typo);
+		color: css-hsla(var(--color), 0.75);
 		font-size: 0.8em;
-		font-weight: $typography-weight-medium;
+		font-weight: $typography-weight-light;
 	}
 
 	&--peer-cell,
 	&--peer-digit {
-		--cell-bg-lum: var(--highlight-lum);
+		// --cell-bg-lum: var(--highlight-lum);
 	}
 
 	&--peer-cell {
-		--cell-bg-alpha: 0.2;
-		--cell-bg-sat: 25%;
+		// --cell-bg-alpha: 0.2;
+		// --cell-bg-sat: 25%;
+		background: css-hsla(var(--primary), 0.2);
 	}
 
 	&--peer-digit {
-		--cell-bg-alpha: 0.5;
+		// --cell-bg-alpha: 0.5;
+		background: css-hsla(var(--primary), 0.75);
+		color: css-hsl(var(--bg));
 	}
 
 	&--invalid {
-		--cell-bg-hue: var(--invalid-hue);
-		--cell-bg-lum: 50%;
-		--cell-bg-alpha: 0.25;
+		$width: 8px;
+		$opacity: 0.5;
+		// --cell-bg-hue: var(--invalid-hue);
+		// --cell-bg-lum: 50%;
+		// --cell-bg-alpha: 0.25;
+		background: linear-gradient(45deg, transparent calc(50% - #{$width / 2}), css-hsla(var(--primary), $opacity) calc(50% - #{$width / 2}),  css-hsla(var(--primary), $opacity) calc(50% + #{$width / 2}), transparent calc(50% + #{$width / 2})),
+			linear-gradient(-45deg, transparent calc(50% - #{$width / 2}), css-hsla(var(--primary), $opacity) calc(50% - #{$width / 2}),  css-hsla(var(--primary), $opacity) calc(50% + #{$width / 2}), transparent calc(50% + #{$width / 2}));
 	}
 
 	&--active {
-		--cell-bg-lum: 100%;
-		--cell-bg-alpha: 1;
+		// --cell-bg-lum: 100%;
+		// --cell-bg-alpha: 1;
 
+		background: css-hsl(var(--bg));
+		color: css-hsl(var(--primary));
 		border: 4px solid;
 		border-radius: 8px;
 		font-size: 1.4em;

@@ -88,7 +88,7 @@ export default {
 	&[aria-checked="true"] {
 		&::before {
 			// background: transparentize(#2a2a2b, 0.5);
-			background: css-hsl(var(--primary-dark));
+			// background: css-hsl(var(--primary-dark));
 		}
 
 		&::after {

@@ -16,7 +16,7 @@ const store = new Vuex.Store({
 		displayErrors: true,
 		isPaused: true,
 		isComplete: false,
-		darkMode: false,
+		darkMode: null,
 		theme: 'purple',
 	},
 
@@ -93,8 +93,8 @@ const store = new Vuex.Store({
 			state.isComplete = isComplete;
 		},
 
-		setDarkMode (state, { desiredState = true } = {}) {
-			state.darkMode = !!desiredState;
+		setDarkMode (state, { stateDesired = true } = {}) {
+			state.darkMode = !!stateDesired;
 		},
 
 		setTheme (state, { theme }) {
@@ -119,6 +119,18 @@ const store = new Vuex.Store({
 		resumeGame ({ commit }) {
 			commit('setPausedState', { isPaused: false });
 		},
+
+		setDarkMode ({ commit }, { stateDesired }) {
+			const rootClassList = document.querySelector(':root').classList;
+			if (stateDesired) {
+				rootClassList.remove('t-light');
+				rootClassList.add('t-dark');
+			} else {
+				rootClassList.remove('t-dark');
+				rootClassList.add('t-light');
+			}
+			commit('setDarkMode', { stateDesired });
+		}
 	},
 
 	plugins: [new VuexPersistence().plugin],
