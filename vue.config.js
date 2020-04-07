@@ -1,5 +1,5 @@
 module.exports = {
-	chainWebpack: (config) => {
+    chainWebpack: (config) => {
 		const svgRule = config.module.rule('svg');
 
 		svgRule.uses.clear();
@@ -48,4 +48,13 @@ module.exports = {
 				};
 			});
 	},
+
+    pwa: {
+      name: 'Sudoku',
+      themeColor: '#fffff8',
+      msTileColor: '#111111',
+      manifestOptions: {
+        background_color: '#fffff8'
+      }
+    }
 };
